@@ -9,6 +9,8 @@ namespace CSC741M_MP1
 {
     public class AlgorithmHandler
     {
+        public static readonly string IMAGES_DIRECTORY = @"D:\MP1Images\";
+
         private static AlgorithmHandler _instance;
 
         private List<Algorithm> algorithms;
