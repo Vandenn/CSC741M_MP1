@@ -41,7 +41,10 @@
             // 
             // algorithmComboBox
             // 
+            this.algorithmComboBox.BackColor = System.Drawing.Color.White;
             this.algorithmComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.algorithmComboBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.algorithmComboBox.ForeColor = System.Drawing.SystemColors.WindowText;
             this.algorithmComboBox.FormattingEnabled = true;
             this.algorithmComboBox.Location = new System.Drawing.Point(130, 40);
             this.algorithmComboBox.Name = "algorithmComboBox";
@@ -76,28 +79,34 @@
             // 
             // BrowseButton
             // 
+            this.BrowseButton.BackColor = System.Drawing.Color.White;
+            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseButton.Location = new System.Drawing.Point(424, 12);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(68, 23);
             this.BrowseButton.TabIndex = 4;
             this.BrowseButton.Text = "Browse";
-            this.BrowseButton.UseVisualStyleBackColor = true;
+            this.BrowseButton.UseVisualStyleBackColor = false;
             this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
             // runButton
             // 
+            this.runButton.BackColor = System.Drawing.Color.White;
             this.runButton.Enabled = false;
+            this.runButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.runButton.Location = new System.Drawing.Point(424, 67);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(68, 23);
             this.runButton.TabIndex = 5;
             this.runButton.Text = "Run";
-            this.runButton.UseVisualStyleBackColor = true;
+            this.runButton.UseVisualStyleBackColor = false;
             this.runButton.Click += new System.EventHandler(this.runButton_Click);
             // 
             // resultImagesPanel
             // 
-            this.resultImagesPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.resultImagesPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.resultImagesPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.resultImagesPanel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.resultImagesPanel.Location = new System.Drawing.Point(16, 181);
             this.resultImagesPanel.Name = "resultImagesPanel";
             this.resultImagesPanel.Size = new System.Drawing.Size(476, 247);
@@ -105,7 +114,8 @@
             // 
             // queryPictureBox
             // 
-            this.queryPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.queryPictureBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.queryPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.queryPictureBox.Location = new System.Drawing.Point(196, 87);
             this.queryPictureBox.Name = "queryPictureBox";
             this.queryPictureBox.Size = new System.Drawing.Size(128, 85);
@@ -116,6 +126,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(504, 440);
             this.Controls.Add(this.queryPictureBox);
             this.Controls.Add(this.resultImagesPanel);
