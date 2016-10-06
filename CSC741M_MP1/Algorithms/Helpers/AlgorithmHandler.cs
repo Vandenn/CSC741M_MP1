@@ -1,4 +1,5 @@
 ﻿using CSC741M_MP1.Algorithms;
+using CSC741M_MP1.Algorithms.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace CSC741M_MP1
 
         public List<string> runAlgorithm(string queryPath, AlgorithmEnum algorithm)
         {
+            CIEConvert.initialize();
             Algorithm toBeRun = algorithms.FirstOrDefault(a => a.getAlgorithmEnum() == algorithm);
             if (toBeRun != null)
             {

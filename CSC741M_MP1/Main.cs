@@ -49,8 +49,8 @@ namespace CSC741M_MP1
             string queryPath = Path.GetFullPath(filePathTextBox.Text);
             if (File.Exists(queryPath))
             {
-                List<string> results = algoHandler.runAlgorithm(queryPath, (AlgorithmEnum)algorithmComboBox.SelectedIndex);
                 showQueryImageOnPictureBox(queryPath);
+                List<string> results = algoHandler.runAlgorithm(queryPath, (AlgorithmEnum)algorithmComboBox.SelectedIndex);
                 showImagesOnPanel(results);
             }
             else
@@ -61,8 +61,6 @@ namespace CSC741M_MP1
 
         private void showQueryImageOnPictureBox(string path)
         {
-            int maxWidth = 128;
-            int maxHeight = 85;
             queryPictureBox.Image = Image.FromFile(path);
             queryPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
         }

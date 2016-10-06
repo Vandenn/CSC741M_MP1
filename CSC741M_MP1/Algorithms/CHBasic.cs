@@ -19,7 +19,7 @@ namespace CSC741M_MP1.Algorithms
             public string path { get; set; }
             public LUVClass[,] convertedImage { get; set; }
             public Dictionary<int,double> histogram { get; set; }
-            public bool isMatch { get; set; }
+            public double similarity { get; set; }
         }
 
         public override AlgorithmEnum getAlgorithmEnum()
@@ -57,10 +57,10 @@ namespace CSC741M_MP1.Algorithms
 
             for (int i = 0; i < data.Count; i++)
             {
-                data[i].isMatch = AlgorithmHelper.isSimilar(queryImageHistogram, data[i].histogram, SIMILARITY_THRESHOLD);
+                data[i].similarity = AlgorithmHelper.getSimilarityLUVHistogram(queryImageHistogram, data[i].histogram, SIMILARITY_THRESHOLD);
             }
 
-            results = data.Where(d => d.isMatch == true).Select(d => d.path).ToList();
+            results = data.Where(d => d.similarity >= SIMILARITY_THRESHOLD).OrderBy(d => d.similarity).Select(d => d.path).ToList();
 
             return results;
         }
