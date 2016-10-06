@@ -36,6 +36,7 @@
             this.runButton = new System.Windows.Forms.Button();
             this.resultImagesPanel = new System.Windows.Forms.Panel();
             this.queryPictureBox = new System.Windows.Forms.PictureBox();
+            this.algorithmProgressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.queryPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -122,12 +123,20 @@
             this.queryPictureBox.TabIndex = 7;
             this.queryPictureBox.TabStop = false;
             // 
+            // algorithmProgressBar
+            // 
+            this.algorithmProgressBar.Location = new System.Drawing.Point(16, 442);
+            this.algorithmProgressBar.Name = "algorithmProgressBar";
+            this.algorithmProgressBar.Size = new System.Drawing.Size(476, 23);
+            this.algorithmProgressBar.TabIndex = 8;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(504, 440);
+            this.ClientSize = new System.Drawing.Size(504, 477);
+            this.Controls.Add(this.algorithmProgressBar);
             this.Controls.Add(this.queryPictureBox);
             this.Controls.Add(this.resultImagesPanel);
             this.Controls.Add(this.runButton);
@@ -154,6 +163,7 @@
         private System.Windows.Forms.Button runButton;
         private System.Windows.Forms.Panel resultImagesPanel;
         private System.Windows.Forms.PictureBox queryPictureBox;
+        private System.Windows.Forms.ProgressBar algorithmProgressBar;
     }
 }
 

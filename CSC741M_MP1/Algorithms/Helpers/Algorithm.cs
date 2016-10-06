@@ -8,8 +8,16 @@ namespace CSC741M_MP1
 {
     public abstract class Algorithm
     {
+        public delegate void ProgressUpdateEvent(double progress);
+        public event ProgressUpdateEvent ProgressUpdate;
+
         public abstract List<String> generateResults(String queryPath);
         public abstract AlgorithmEnum getAlgorithmEnum();
+
+        protected void raiseProgressUpdate(double progress)
+        {
+            ProgressUpdate(progress);
+        }
 
         public static string AlgorithmEnumToString(AlgorithmEnum e)
         {

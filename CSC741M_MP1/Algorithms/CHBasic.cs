@@ -17,9 +17,12 @@ namespace CSC741M_MP1.Algorithms
         private class CHBasicData
         {
             public string path { get; set; }
-            public LUVClass[,] convertedImage { get; set; }
-            public Dictionary<int,double> histogram { get; set; }
             public double similarity { get; set; }
+            public CHBasicData(string path, double similarity)
+            {
+                this.path = path;
+                this.similarity = similarity;
+            }
         }
 
         public override AlgorithmEnum getAlgorithmEnum()
@@ -34,35 +37,33 @@ namespace CSC741M_MP1.Algorithms
                 return new List<string>();
             }
 
-            List<string> results = new List<string>();
-            List<CHBasicData> data = new List<CHBasicData>();
+            List<CHBasicData> results = new List<CHBasicData>();
 
             LUVClass[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
             Dictionary<int, double> queryImageHistogram = AlgorithmHelper.generateLUVHistogram(convertedQueryImage);
 
             List<string> dataImagePaths = Directory.GetFiles(AlgorithmHandler.IMAGES_DIRECTORY).ToList();
 
+            string path;
+            LUVClass[,] convertedImage;
+            Dictionary<int, double> histogram;
+            double similarity;
             for (int i = 0; i < dataImagePaths.Count; i++)
             {
-                CHBasicData newData = new CHBasicData();
-                newData.path = dataImagePaths[i];
-                newData.convertedImage = AlgorithmHelper.convertImageToLUV(dataImagePaths[i]);
-                data.Add(newData);
+                path = dataImagePaths[i];
+                convertedImage = AlgorithmHelper.convertImageToLUV(path);
+                histogram = AlgorithmHelper.generateLUVHistogram(convertedImage);
+                similarity = AlgorithmHelper.getSimilarityLUVHistogram(queryImageHistogram, histogram, SIMILARITY_THRESHOLD);
+                if (similarity >= SIMILARITY_THRESHOLD)
+                {
+                    results.Add(new CHBasicData(path, similarity));
+                }
+                raiseProgressUpdate((double)i / (dataImagePaths.Count - 1));
             }
 
-            for (int i = 0; i < data.Count; i++)
-            {
-                data[i].histogram = AlgorithmHelper.generateLUVHistogram(data[i].convertedImage);
-            }
+            results = results.OrderBy(d => d.similarity).ToList();
 
-            for (int i = 0; i < data.Count; i++)
-            {
-                data[i].similarity = AlgorithmHelper.getSimilarityLUVHistogram(queryImageHistogram, data[i].histogram, SIMILARITY_THRESHOLD);
-            }
-
-            results = data.Where(d => d.similarity >= SIMILARITY_THRESHOLD).OrderBy(d => d.similarity).Select(d => d.path).ToList();
-
-            return results;
+            return results.Select(d => d.path).ToList();
         }
     }
 }

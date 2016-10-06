@@ -14,6 +14,8 @@ namespace CSC741M_MP1
     public partial class Main : Form
     {
         private AlgorithmHandler algoHandler;
+        private BackgroundWorker processWorker;
+        private List<String> results;
 
         public Main()
         {
@@ -21,6 +23,7 @@ namespace CSC741M_MP1
 
             ///Property Initializations
             algoHandler = AlgorithmHandler.getInstance();
+            results = new List<String>();
 
             /// UI Initializations
             BindingSource algorithmComboBoxSource = new BindingSource();
@@ -28,6 +31,45 @@ namespace CSC741M_MP1
             algorithmComboBox.DataSource = algorithmComboBoxSource;
             algorithmComboBox.SelectedIndex = 0;
             resultImagesPanel.AutoScroll = true;
+
+            /// Background Worker
+            processWorker = new BackgroundWorker();
+            processWorker.DoWork += new DoWorkEventHandler(process_DoWork);
+            processWorker.ProgressChanged += new ProgressChangedEventHandler
+                    (process_ProgressChanged);
+            processWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler
+                    (process_RunWorkerCompleted);
+            processWorker.WorkerReportsProgress = true;
+            
+        }
+
+        private void process_DoWork(object sender, DoWorkEventArgs e)
+        {
+            object[] parameters = e.Argument as object[];
+            string queryPath = parameters[0] as string;
+            int algorithm = (int)parameters[1];
+            if (File.Exists(queryPath))
+            {
+                Algorithm algo = algoHandler.getAlgorithm((AlgorithmEnum)algorithm);
+                algo.ProgressUpdate += algorithmProgressListener;
+                results = algoHandler.runAlgorithm(queryPath, (AlgorithmEnum)algorithm);
+            }
+        }
+
+        private void algorithmProgressListener(double progress)
+        {
+            processWorker.ReportProgress((int)Math.Ceiling(progress * 100));
+        }
+
+        private void process_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            algorithmProgressBar.Value = e.ProgressPercentage;
+        }
+
+        private void process_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            toggleFieldsAndButtons(true);
+            showImagesOnPanel(results);
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)
@@ -47,16 +89,25 @@ namespace CSC741M_MP1
         private void runButton_Click(object sender, EventArgs e)
         {
             string queryPath = Path.GetFullPath(filePathTextBox.Text);
-            if (File.Exists(queryPath))
+            if (File.Exists(queryPath) && !processWorker.IsBusy)
             {
                 showQueryImageOnPictureBox(queryPath);
-                List<string> results = algoHandler.runAlgorithm(queryPath, (AlgorithmEnum)algorithmComboBox.SelectedIndex);
-                showImagesOnPanel(results);
+                object[] parameters = new object[] { queryPath, algorithmComboBox.SelectedIndex };
+                toggleFieldsAndButtons(false);
+                processWorker.RunWorkerAsync(parameters);
             }
             else
             {
                 MessageBox.Show("Algorithm or query image path is invalid!", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void toggleFieldsAndButtons(bool active)
+        {
+            filePathTextBox.Enabled = active;
+            BrowseButton.Enabled = active;
+            runButton.Enabled = active;
+            algorithmComboBox.Enabled = active;
         }
 
         private void showQueryImageOnPictureBox(string path)

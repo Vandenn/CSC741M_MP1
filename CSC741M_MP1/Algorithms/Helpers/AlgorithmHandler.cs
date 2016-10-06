@@ -26,6 +26,11 @@ namespace CSC741M_MP1
             algorithms.Add(new BonusAlgorithm());
         }
 
+        public Algorithm getAlgorithm(AlgorithmEnum algorithm)
+        {
+            return algorithms.FirstOrDefault(a => a.getAlgorithmEnum() == algorithm);
+        }
+
         public List<string> runAlgorithm(string queryPath, AlgorithmEnum algorithm)
         {
             CIEConvert.initialize();
