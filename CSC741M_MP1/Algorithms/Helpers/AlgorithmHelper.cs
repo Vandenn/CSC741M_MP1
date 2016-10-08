@@ -58,7 +58,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             return histogram;
         }
 
-        public static double getSimilarityLUVHistogram(Dictionary<int, double> query, Dictionary<int, double> data, double threshold)
+        public static double getExactSimilarityLUVHistogram(Dictionary<int, double> query, Dictionary<int, double> data, double threshold)
         {
             Dictionary<int, double> compilation = new Dictionary<int, double>();
             for (int i = 0; i < query.Count; i++)
@@ -66,24 +66,9 @@ namespace CSC741M_MP1.Algorithms.Helpers
                 int queryKey = query.Keys.ElementAt(i);
                 if (query[queryKey] >= threshold)
                 {
-                    compilation.Add(queryKey, 0.0);
-                    double dataValue = 0.0;
-                    if (data.ContainsKey(queryKey))
-                    {
-                        dataValue = data[queryKey];
-                        data.Remove(queryKey);
-                    }
-                    compilation[queryKey] = 1 - Math.Abs((query[queryKey] - dataValue) / Math.Max(query[queryKey], dataValue));
+                    compilation.Add(queryKey, getColorExactSimilarity(queryKey, query, data));
                 }
             }
-
-            /*
-            for (int i = 0; i < data.Count; i++)
-            {
-                int dataKey = data.Keys.ElementAt(i);
-                compilation.Add(dataKey, 0.0);
-            }
-            */
 
             double total = 0.0;
             int keyCount = compilation.Keys.Count;
@@ -94,6 +79,48 @@ namespace CSC741M_MP1.Algorithms.Helpers
             total /= keyCount;
 
             return total;
+        }
+
+        public static double getPerceptualSimilarityLUVHistogram(Dictionary<int, double> query, Dictionary<int, double> data, double threshold)
+        {
+            Dictionary<int, double> compilation = new Dictionary<int, double>();
+            for (int i = 0; i < query.Count; i++)
+            {
+                int queryKey = query.Keys.ElementAt(i);
+                if (query[queryKey] >= threshold)
+                {
+                    compilation.Add(queryKey, getColorExactSimilarity(queryKey, query, data) * (1 + getColorPerceptualSimilarity(queryKey, query, data)));
+                }
+            }
+
+            double total = 0.0;
+            foreach (int key in compilation.Keys)
+            {
+                total += compilation[key] * query[key];
+            }
+            return total;
+        }
+
+        public static double getColorExactSimilarity(int colorIndex, Dictionary<int, double> query, Dictionary<int, double> data)
+        {
+            double dataNH = data.ContainsKey(colorIndex) ? data[colorIndex] : 0.0;
+            return 1 - Math.Abs((query[colorIndex] - dataNH) / Math.Max(query[colorIndex], dataNH));
+        }
+
+        public static double getColorPerceptualSimilarity(int colorIndex, Dictionary<int, double> query, Dictionary<int, double> data)
+        {
+            double result = 0;
+            double queryNH = query[colorIndex];
+            double dataNH = 0.0;
+            for (int i = 0; i < CIEConvert.LuvSimilarityMatrix.GetLength(1); i++)
+            {
+                if (CIEConvert.LuvSimilarityMatrix[colorIndex, i] > 0)
+                {
+                    dataNH = data.ContainsKey(i) ? data[i] : 0.0;
+                    result += (1 - (Math.Abs((queryNH - dataNH) / Math.Max(queryNH, dataNH)))) * CIEConvert.LuvSimilarityMatrix[colorIndex, i];
+                }
+            }
+            return result;
         }
     }
 }

@@ -22,7 +22,10 @@ namespace CSC741M_MP1.Algorithms.Helpers
     public class CIEConvert
     {
         private static bool initialized = false;
-        private static Luv[] LuvIndex;
+        public static Luv[] LuvIndex;
+        public static double[,] LuvSimilarityMatrix;
+        public static double MaxLuvDistance;
+        public static double PerceptualDifferenceThreshold;
 
         protected CIEConvert() {}
 
@@ -30,12 +33,16 @@ namespace CSC741M_MP1.Algorithms.Helpers
         {
             if (!initialized)
             {
-                LuvIndex = new Luv[160];
-                for (int i = 0; i < 160; i++)
+                LuvIndex = new Luv[159];
+                LuvSimilarityMatrix = new double[159, 159];
+                MaxLuvDistance = 0;
+                PerceptualDifferenceThreshold = 0;
+                for (int i = 0; i < 159; i++)
                 {
                     LuvIndex[i] = new Luv();
                 }
                 initLuvIndex();
+                initLuvSimilarityMatrix();
                 initialized = true;
             }
         }
@@ -216,6 +223,36 @@ namespace CSC741M_MP1.Algorithms.Helpers
             LuvIndex[156].L = 88.888889; LuvIndex[156].U = 24.831306; LuvIndex[156].V = 63.579482;
             LuvIndex[157].L = 88.888889; LuvIndex[157].U = 24.831306; LuvIndex[157].V = 92.526611;
             LuvIndex[158].L = 100; LuvIndex[158].U = 0; LuvIndex[158].V = 0;
+        }
+        public static void initLuvSimilarityMatrix()
+        {
+            for (int i = 0; i < LuvSimilarityMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < LuvSimilarityMatrix.GetLength(1); j++)
+                {
+                    LuvSimilarityMatrix[i, j] = getLuvDistance(LuvIndex[i], LuvIndex[j]);
+                    MaxLuvDistance = Math.Max(MaxLuvDistance, LuvSimilarityMatrix[i, j]);
+                }
+            }
+            PerceptualDifferenceThreshold = 0.2 * MaxLuvDistance;
+            for (int i = 0; i < LuvSimilarityMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < LuvSimilarityMatrix.GetLength(1); j++)
+                {
+                    if (LuvSimilarityMatrix[i, j] > PerceptualDifferenceThreshold)
+                    {
+                        LuvSimilarityMatrix[i, j] = 0;
+                    }
+                    else
+                    {
+                        LuvSimilarityMatrix[i, j] = 1 - (LuvSimilarityMatrix[i, j]/PerceptualDifferenceThreshold);
+                    }
+                }
+            }
+        }
+        private static double getLuvDistance(Luv luv1, Luv luv2)
+        {
+            return Math.Sqrt(Math.Pow(luv1.L - luv2.L, 2) + Math.Pow(luv1.U - luv2.U, 2) + Math.Pow(luv1.V - luv2.V, 2));
         }
         private static double round(double value, int decimalPlace)
         {

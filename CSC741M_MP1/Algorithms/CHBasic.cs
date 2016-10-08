@@ -55,7 +55,7 @@ namespace CSC741M_MP1.Algorithms
                 path = dataImagePaths[i];
                 convertedImage = AlgorithmHelper.convertImageToLUV(path);
                 histogram = AlgorithmHelper.generateLUVHistogram(convertedImage);
-                similarity = AlgorithmHelper.getSimilarityLUVHistogram(queryImageHistogram, histogram, SIGNIFICANT_QUERY_THRESHOLD);
+                similarity = AlgorithmHelper.getExactSimilarityLUVHistogram(queryImageHistogram, histogram, SIGNIFICANT_QUERY_THRESHOLD);
                 if (similarity >= SIMILARITY_THRESHOLD)
                 {
                     results.Add(new CHBasicData(path, similarity));
