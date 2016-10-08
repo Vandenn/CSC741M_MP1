@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ColorMine.ColorSpaces;
 
 namespace CSC741M_MP1.Algorithms.Helpers
 {
@@ -21,7 +22,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
     public class CIEConvert
     {
         private static bool initialized = false;
-        private static LUVClass[] LuvIndex;
+        private static Luv[] LuvIndex;
 
         protected CIEConvert() {}
 
@@ -29,97 +30,29 @@ namespace CSC741M_MP1.Algorithms.Helpers
         {
             if (!initialized)
             {
-                LuvIndex = new LUVClass[160];
+                LuvIndex = new Luv[160];
                 for (int i = 0; i < 160; i++)
                 {
-                    LuvIndex[i] = new LUVClass();
+                    LuvIndex[i] = new Luv();
                 }
                 initLuvIndex();
                 initialized = true;
             }
         }
 
-        public static LUVClass RGBtoLUV(Color color)
+        public static Luv RGBtoLUV(Color color)
         {
-            return RGBtoLUV(new RGBClass(color.R, color.G, color.B));
+            return RGBtoLUV(new Rgb { R = color.R, G = color.G, B = color.B });
         }
 
-        public static LUVClass RGBtoLUV(RGBClass rgb)
+        public static Luv RGBtoLUV(Rgb rgb)
         {
-            double r, g, b, X, Y, Z, un, vn, uPrime, vPrime;
-            r = rgb.R; g = rgb.G; b = rgb.B;
-            LUVClass finalLUV = new LUVClass();
-
-            X = 0.607 * r + 0.174 * g + 0.200 * b;
-            Y = 0.299 * r + 0.587 * g + 0.114 * b;
-            Z = 0.066 * g + 1.116 * b;
-
-            un = 0.2022217;
-            vn = 0.4608889;
-
-            double temp = X + 15.0 * Y + 3.0 * Z;
-
-            if (Y > 0.008856)
-            {
-                finalLUV.L = 116.0 * Math.Pow(Y, 0.3333333) - 16.0;
-            }
-            else
-            {
-                finalLUV.L = 903.3 * Y;
-            }
-
-            if (temp > 0.000001)
-            {
-                uPrime = 4.0 * X / temp;
-                vPrime = 9.0 * Y / temp;
-                finalLUV.U = 13.0 * finalLUV.L * (uPrime - un);
-                finalLUV.V = 13.0 * finalLUV.L * (vPrime - vn);
-            }
-            else
-            {
-                finalLUV.U = 0.0;
-                finalLUV.V = 0.0;
-            }
-
-            finalLUV.L = round(finalLUV.L, 6);
-            finalLUV.U = round(finalLUV.U, 6);
-            finalLUV.V = round(finalLUV.V, 6);
-
-            return finalLUV;
+            return rgb.To<Luv>();
         }
 
-        public static RGBClass LUVtoRGB(LUVClass luv)
+        public static Rgb LUVtoRGB(Luv luv)
         {
-            double r, g, b, X, Y, Z, un, vn, uPrime, vPrime;
-
-            if (luv.L == 0.0)
-            {
-                X = Y = Z = 0.0;
-            }
-
-            un = 0.2022217;
-            vn = 0.4608889;
-
-            uPrime = luv.U / (13.0 * luv.L) + un;
-            vPrime = luv.V / (13.0 * luv.L) + vn;
-
-            if (luv.L < 7.9996248)
-            {
-                Y = luv.L / 903.3;
-            }
-            else
-            {
-                Y = Math.Pow((luv.L + 16.0) / 116.0, 3.0);
-            }
-
-            X = -(9.0 * Y * uPrime) / ((uPrime - 4.0) * vPrime - uPrime * vPrime);
-            Z = (9.0 * Y - 15.0 * vPrime * Y - vPrime * X) / (3.0 * vPrime);
-
-            r = 1.910 * X - 0.532 * Y - 0.288 * Z;
-            g = -0.985 * X + 1.999 * Y - 0.028 * Z;
-            b = 0.058 * X - 0.118 * Y + 0.898 * Z;
-
-            return new RGBClass(r, g, b);
+            return luv.To<Rgb>();
         }
 
         public static void initLuvIndex()
@@ -294,7 +227,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             return Math.Round(value * powerOfTen) / powerOfTen;
         }
 
-        public static int LuvIndexOf(LUVClass luv)
+        public static int LuvIndexOf(Luv luv)
         {
             int nL = 0;
             int nHi = 0;
@@ -650,7 +583,6 @@ namespace CSC741M_MP1.Algorithms.Helpers
             return nHi;
         }
     }
-    */
 
     public class LUVClass
     {
@@ -679,4 +611,5 @@ namespace CSC741M_MP1.Algorithms.Helpers
             this.B = B;
         }
     }
+    */
 }

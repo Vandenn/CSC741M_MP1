@@ -1,4 +1,5 @@
-﻿using CSC741M_MP1.Algorithms.Helpers;
+﻿using ColorMine.ColorSpaces;
+using CSC741M_MP1.Algorithms.Helpers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,7 +13,8 @@ namespace CSC741M_MP1.Algorithms
 {
     public class CHBasic: Algorithm
     {
-        private const double SIMILARITY_THRESHOLD = 0.5;
+        private const double SIGNIFICANT_QUERY_THRESHOLD = 0.05;
+        private const double SIMILARITY_THRESHOLD = 0.0;
 
         private class CHBasicData
         {
@@ -39,13 +41,13 @@ namespace CSC741M_MP1.Algorithms
 
             List<CHBasicData> results = new List<CHBasicData>();
 
-            LUVClass[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
+            Luv[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
             Dictionary<int, double> queryImageHistogram = AlgorithmHelper.generateLUVHistogram(convertedQueryImage);
 
             List<string> dataImagePaths = Directory.GetFiles(AlgorithmHandler.IMAGES_DIRECTORY).ToList();
 
             string path;
-            LUVClass[,] convertedImage;
+            Luv[,] convertedImage;
             Dictionary<int, double> histogram;
             double similarity;
             for (int i = 0; i < dataImagePaths.Count; i++)
@@ -53,7 +55,7 @@ namespace CSC741M_MP1.Algorithms
                 path = dataImagePaths[i];
                 convertedImage = AlgorithmHelper.convertImageToLUV(path);
                 histogram = AlgorithmHelper.generateLUVHistogram(convertedImage);
-                similarity = AlgorithmHelper.getSimilarityLUVHistogram(queryImageHistogram, histogram, SIMILARITY_THRESHOLD);
+                similarity = AlgorithmHelper.getSimilarityLUVHistogram(queryImageHistogram, histogram, SIGNIFICANT_QUERY_THRESHOLD);
                 if (similarity >= SIMILARITY_THRESHOLD)
                 {
                     results.Add(new CHBasicData(path, similarity));
@@ -61,7 +63,7 @@ namespace CSC741M_MP1.Algorithms
                 raiseProgressUpdate((double)i / (dataImagePaths.Count - 1));
             }
 
-            results = results.OrderBy(d => d.similarity).ToList();
+            results = results.OrderByDescending(d => d.similarity).ToList();
 
             return results.Select(d => d.path).ToList();
         }

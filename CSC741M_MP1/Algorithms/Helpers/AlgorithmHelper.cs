@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColorMine.ColorSpaces;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace CSC741M_MP1.Algorithms.Helpers
 {
     public class AlgorithmHelper
     {
-        public static LUVClass[,] convertImageToLUV(string path)
+        public static Luv[,] convertImageToLUV(string path)
         {
             Bitmap image = new Bitmap(path);
 
-            LUVClass[,] convertedImage = new LUVClass[image.Height, image.Width];
+            Luv[,] convertedImage = new Luv[image.Height, image.Width];
 
             for (int i = 0; i < image.Height; i++)
             {
@@ -27,7 +28,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             return convertedImage;
         }
 
-        public static Dictionary<int, double> generateLUVHistogram(LUVClass[,] image)
+        public static Dictionary<int, double> generateLUVHistogram(Luv[,] image)
         {
             Dictionary<int, double> histogram = new Dictionary<int, double>();
 

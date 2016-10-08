@@ -15,6 +15,7 @@ namespace CSC741M_MP1
     {
         private AlgorithmHandler algoHandler;
         private BackgroundWorker processWorker;
+        private BackgroundWorker imagePanelWorker;
         private List<String> results;
 
         public Main()
@@ -40,7 +41,14 @@ namespace CSC741M_MP1
             processWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler
                     (process_RunWorkerCompleted);
             processWorker.WorkerReportsProgress = true;
-            
+            imagePanelWorker = new BackgroundWorker();
+            imagePanelWorker.DoWork += new DoWorkEventHandler(imagePanelWorker_DoWork);
+            imagePanelWorker.ProgressChanged += new ProgressChangedEventHandler
+                    (imagePanelWorker_ProgressChanged);
+            imagePanelWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler
+                    (imagePanelWorker_RunWorkerCompleted);
+            imagePanelWorker.WorkerReportsProgress = true;
+
         }
 
         private void process_DoWork(object sender, DoWorkEventArgs e)
@@ -69,7 +77,42 @@ namespace CSC741M_MP1
         private void process_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             toggleFieldsAndButtons(true);
-            showImagesOnPanel(results);
+            resultImagesPanel.Controls.Clear();
+            imagePanelWorker.RunWorkerAsync(results);
+        }
+
+        private void imagePanelWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            List<String> queryPath = (List<String>)e.Argument;
+            int x = 10;
+            int y = 10;
+            int maxHeight = -1;
+            foreach (string path in results)
+            {
+                PictureBox picture = new PictureBox();
+                picture.Image = Image.FromFile(path);
+                picture.Location = new Point(x, y);
+                picture.SizeMode = PictureBoxSizeMode.CenterImage;
+                x += picture.Width + 10;
+                maxHeight = Math.Max(maxHeight, picture.Height);
+                if (x > this.ClientSize.Width - picture.Width)
+                {
+                    x = 10;
+                    y += maxHeight + 10;
+                    maxHeight = -1;
+                }
+                imagePanelWorker.ReportProgress(0, picture);
+            }
+        }
+
+        private void imagePanelWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            resultImagesPanel.Controls.Add((PictureBox)e.UserState);
+        }
+
+        private void imagePanelWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)
@@ -114,29 +157,6 @@ namespace CSC741M_MP1
         {
             queryPictureBox.Image = Image.FromFile(path);
             queryPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-        }
-
-        private void showImagesOnPanel(List<string> results)
-        {
-            int x = 10;
-            int y = 10;
-            int maxHeight = -1;
-            foreach (string path in results)
-            {
-                PictureBox picture = new PictureBox();
-                picture.Image = Image.FromFile(path);
-                picture.Location = new Point(x, y);
-                picture.SizeMode = PictureBoxSizeMode.CenterImage;
-                x += picture.Width + 10;
-                maxHeight = Math.Max(maxHeight, picture.Height);
-                if (x > this.ClientSize.Width - picture.Width)
-                {
-                    x = 10;
-                    y += maxHeight + 10;
-                    maxHeight = -1;
-                }
-                resultImagesPanel.Controls.Add(picture);
-            }
         }
 
         private void filePathTextBox_TextChanged(object sender, EventArgs e)
