@@ -8,6 +8,17 @@ using System.Threading.Tasks;
 
 namespace CSC741M_MP1.Algorithms.Helpers
 {
+    public class ResultData
+    {
+        public string path { get; set; }
+        public double similarity { get; set; }
+        public ResultData(string path, double similarity)
+        {
+            this.path = path;
+            this.similarity = similarity;
+        }
+    }
+
     public class AlgorithmHelper
     {
         public static Luv[,] convertImageToLUV(string path)
@@ -56,49 +67,6 @@ namespace CSC741M_MP1.Algorithms.Helpers
             }
 
             return histogram;
-        }
-
-        public static double getExactSimilarityLUVHistogram(Dictionary<int, double> query, Dictionary<int, double> data, double threshold)
-        {
-            Dictionary<int, double> compilation = new Dictionary<int, double>();
-            for (int i = 0; i < query.Count; i++)
-            {
-                int queryKey = query.Keys.ElementAt(i);
-                if (query[queryKey] >= threshold)
-                {
-                    compilation.Add(queryKey, getColorExactSimilarity(queryKey, query, data));
-                }
-            }
-
-            double total = 0.0;
-            int keyCount = compilation.Keys.Count;
-            foreach (int key in compilation.Keys)
-            {
-                total += compilation[key];
-            }
-            total /= keyCount;
-
-            return total;
-        }
-
-        public static double getPerceptualSimilarityLUVHistogram(Dictionary<int, double> query, Dictionary<int, double> data, double threshold)
-        {
-            Dictionary<int, double> compilation = new Dictionary<int, double>();
-            for (int i = 0; i < query.Count; i++)
-            {
-                int queryKey = query.Keys.ElementAt(i);
-                if (query[queryKey] >= threshold)
-                {
-                    compilation.Add(queryKey, getColorExactSimilarity(queryKey, query, data) * (1 + getColorPerceptualSimilarity(queryKey, query, data)));
-                }
-            }
-
-            double total = 0.0;
-            foreach (int key in compilation.Keys)
-            {
-                total += compilation[key] * query[key];
-            }
-            return total;
         }
 
         public static double getColorExactSimilarity(int colorIndex, Dictionary<int, double> query, Dictionary<int, double> data)

@@ -16,17 +16,6 @@ namespace CSC741M_MP1.Algorithms
         private const double SIGNIFICANT_QUERY_THRESHOLD = 0.05;
         private const double SIMILARITY_THRESHOLD = 0.0;
 
-        private class CHBasicData
-        {
-            public string path { get; set; }
-            public double similarity { get; set; }
-            public CHBasicData(string path, double similarity)
-            {
-                this.path = path;
-                this.similarity = similarity;
-            }
-        }
-
         public override AlgorithmEnum getAlgorithmEnum()
         {
             return AlgorithmEnum.CHBasic;
@@ -39,7 +28,7 @@ namespace CSC741M_MP1.Algorithms
                 return new List<string>();
             }
 
-            List<CHBasicData> results = new List<CHBasicData>();
+            List<ResultData> results = new List<ResultData>();
 
             Luv[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
             Dictionary<int, double> queryImageHistogram = AlgorithmHelper.generateLUVHistogram(convertedQueryImage);
@@ -55,10 +44,10 @@ namespace CSC741M_MP1.Algorithms
                 path = dataImagePaths[i];
                 convertedImage = AlgorithmHelper.convertImageToLUV(path);
                 histogram = AlgorithmHelper.generateLUVHistogram(convertedImage);
-                similarity = AlgorithmHelper.getExactSimilarityLUVHistogram(queryImageHistogram, histogram, SIGNIFICANT_QUERY_THRESHOLD);
+                similarity = getSimilarity(queryImageHistogram, histogram, SIGNIFICANT_QUERY_THRESHOLD);
                 if (similarity >= SIMILARITY_THRESHOLD)
                 {
-                    results.Add(new CHBasicData(path, similarity));
+                    results.Add(new ResultData(path, similarity));
                 }
                 raiseProgressUpdate((double)i / (dataImagePaths.Count - 1));
             }
@@ -66,6 +55,29 @@ namespace CSC741M_MP1.Algorithms
             results = results.OrderByDescending(d => d.similarity).ToList();
 
             return results.Select(d => d.path).ToList();
+        }
+
+        private double getSimilarity(Dictionary<int, double> query, Dictionary<int, double> data, double threshold)
+        {
+            Dictionary<int, double> compilation = new Dictionary<int, double>();
+            for (int i = 0; i < query.Count; i++)
+            {
+                int queryKey = query.Keys.ElementAt(i);
+                if (query[queryKey] >= threshold)
+                {
+                    compilation.Add(queryKey, AlgorithmHelper.getColorExactSimilarity(queryKey, query, data));
+                }
+            }
+
+            double total = 0.0;
+            int keyCount = compilation.Keys.Count;
+            foreach (int key in compilation.Keys)
+            {
+                total += compilation[key];
+            }
+            total /= keyCount;
+
+            return total;
         }
     }
 }
