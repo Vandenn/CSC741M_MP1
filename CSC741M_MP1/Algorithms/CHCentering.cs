@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace CSC741M_MP1.Algorithms
 {
+    public class CenteringPair
+    {
+        public double center { get; set; }
+        public double nonCenter { get; set; }
+        public CenteringPair(double center, double nonCenter)
+        {
+            this.center = center;
+            this.nonCenter = nonCenter;
+        }
+    }
+
     public class CHCentering: Algorithm
     {
-        private class CenteringPair
-        {
-            public double center { get; set; }
-            public double nonCenter { get; set; }
-            public CenteringPair(double center, double nonCenter)
-            {
-                this.center = center;
-                this.nonCenter = nonCenter;
-            }
-        }
-
         private const double SIGNIFICANT_QUERY_THRESHOLD = 0.05;
         private const double SIMILARITY_THRESHOLD = 0.0;
         private const double CENTERING_PERCENTAGE = 0.5;

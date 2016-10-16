@@ -54,6 +54,7 @@
     <Compile Include="Algorithms\CHBasic.cs" />
     <Compile Include="Algorithms\Helpers\AlgorithmHelper.cs" />
     <Compile Include="Algorithms\Helpers\CIEConvert.cs" />
+    <Compile Include="Algorithms\Helpers\CoherenceCalculator.cs" />
     <Compile Include="Algorithms\HistogramCoherence.cs" />
     <Compile Include="Algorithms\CHPerpetual.cs" />
     <Compile Include="Algorithms\Helpers\Algorithm.cs" />

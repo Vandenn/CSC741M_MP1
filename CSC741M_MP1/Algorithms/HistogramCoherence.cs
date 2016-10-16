@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace CSC741M_MP1.Algorithms
 {
+    public class CoherencePair
+    {
+        public double coherent { get; set; }
+        public double nonCoherent { get; set; }
+        public CoherencePair(double coherent, double nonCoherent)
+        {
+            this.coherent = coherent;
+            this.nonCoherent = nonCoherent;
+        }
+    }
+
     public class HistogramCoherence : Algorithm
     {
-        private class CoherencePair
-        {
-            public double coherent { get; set; }
-            public double nonCoherent { get; set; }
-            public CoherencePair(double coherent, double nonCoherent)
-            {
-                this.coherent = coherent;
-                this.nonCoherent = nonCoherent;
-            }
-        }
-
         private const double SIGNIFICANT_QUERY_THRESHOLD = 0.05;
         private const double SIMILARITY_THRESHOLD = 0.0;
 
@@ -38,21 +38,24 @@ namespace CSC741M_MP1.Algorithms
             }
 
             List<ResultData> results = new List<ResultData>();
-
+ 
             Luv[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
-            Dictionary<int, CoherencePair> queryImageCoherenceVector = generateCoherenceVector(convertedQueryImage);
+            CoherenceCalculator queryCalculator = new CoherenceCalculator(convertedQueryImage);
+            Dictionary<int, CoherencePair> queryImageCoherenceVector = queryCalculator.generateCoherenceVector();
 
             List<string> dataImagePaths = Directory.GetFiles(AlgorithmHandler.IMAGES_DIRECTORY).ToList();
 
             string path;
             Luv[,] convertedImage;
+            CoherenceCalculator calculator;
             Dictionary<int, CoherencePair> vector;
             double similarity;
             for (int i = 0; i < dataImagePaths.Count; i++)
             {
                 path = dataImagePaths[i];
                 convertedImage = AlgorithmHelper.convertImageToLUV(path);
-                vector = generateCoherenceVector(convertedImage);
+                calculator = new CoherenceCalculator(convertedImage);
+                vector = calculator.generateCoherenceVector();
                 similarity = getSimilarity(queryImageCoherenceVector, vector, SIGNIFICANT_QUERY_THRESHOLD);
                 if (similarity >= SIMILARITY_THRESHOLD)
                 {
@@ -65,21 +68,6 @@ namespace CSC741M_MP1.Algorithms
             results = results.OrderByDescending(d => d.similarity).ToList();
 
             return results.Select(d => d.path).ToList();
-        }
-
-        private Dictionary<int, CoherencePair> generateCoherenceVector(Luv[,] image)
-        {
-            Dictionary<int, CoherencePair> vector = new Dictionary<int, CoherencePair>();
-
-            //algorithm here
-            //temp:
-            var histogram = AlgorithmHelper.generateLUVHistogram(image);
-            foreach (int key in histogram.Keys)
-            {
-                vector.Add(key, new CoherencePair(histogram[key] / 2, histogram[key] / 2));
-            }
-
-            return vector;
         }
 
         private double getSimilarity(Dictionary<int, CoherencePair> query, Dictionary<int, CoherencePair> data, double threshold)
