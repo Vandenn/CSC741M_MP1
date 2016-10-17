@@ -18,6 +18,7 @@ namespace CSC741M_MP1.Model
         private double similarityThreshold;
         private double relevanceThreshold;
         private double centerAmount;
+        private bool eightConnected;
 
         public string DefaultSearchPath
         {
@@ -64,6 +65,14 @@ namespace CSC741M_MP1.Model
                     centerAmount = value;
             }
         }
+        public bool EightConnected
+        {
+            get { return eightConnected; }
+            set
+            {
+                eightConnected = value;
+            }
+        }
 
         protected Settings()
         {
@@ -72,6 +81,7 @@ namespace CSC741M_MP1.Model
             similarityThreshold = 0.0;
             relevanceThreshold = 0.05;
             centerAmount = 0.5;
+            eightConnected = false;
         }
 
         public static Settings getSettings()

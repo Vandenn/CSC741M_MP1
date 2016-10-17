@@ -41,9 +41,11 @@
             this.CenterAmountTextBox = new System.Windows.Forms.TextBox();
             this.CenterAmountLabel = new System.Windows.Forms.Label();
             this.Tooltip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.DefaultSearchPathBrowseButton = new System.Windows.Forms.Button();
             this.DefaultSearchPathTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.DefaultSearchPathBrowseButton = new System.Windows.Forms.Button();
+            this.EightConnectedComboBox = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -127,7 +129,7 @@
             // 
             this.SaveButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveButton.Location = new System.Drawing.Point(173, 191);
+            this.SaveButton.Location = new System.Drawing.Point(173, 204);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(93, 23);
             this.SaveButton.TabIndex = 8;
@@ -155,17 +157,6 @@
             this.Tooltip1.SetToolTip(this.CenterAmountLabel, "The percentage of centering represented as a floating point number when using the" +
         " Color Histogram with Centering Refinement algorithm.");
             // 
-            // DefaultSearchPathBrowseButton
-            // 
-            this.DefaultSearchPathBrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DefaultSearchPathBrowseButton.Location = new System.Drawing.Point(333, 31);
-            this.DefaultSearchPathBrowseButton.Name = "DefaultSearchPathBrowseButton";
-            this.DefaultSearchPathBrowseButton.Size = new System.Drawing.Size(93, 23);
-            this.DefaultSearchPathBrowseButton.TabIndex = 13;
-            this.DefaultSearchPathBrowseButton.Text = "Browse";
-            this.DefaultSearchPathBrowseButton.UseVisualStyleBackColor = true;
-            this.DefaultSearchPathBrowseButton.Click += new System.EventHandler(this.DefaultSearchPathBrowseButton_Click);
-            // 
             // DefaultSearchPathTextBox
             // 
             this.DefaultSearchPathTextBox.Location = new System.Drawing.Point(128, 33);
@@ -184,12 +175,46 @@
             this.label4.Text = "Default Search Path";
             this.Tooltip1.SetToolTip(this.label4, "The default starting folder when searching for a query image.");
             // 
+            // DefaultSearchPathBrowseButton
+            // 
+            this.DefaultSearchPathBrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DefaultSearchPathBrowseButton.Location = new System.Drawing.Point(333, 31);
+            this.DefaultSearchPathBrowseButton.Name = "DefaultSearchPathBrowseButton";
+            this.DefaultSearchPathBrowseButton.Size = new System.Drawing.Size(93, 23);
+            this.DefaultSearchPathBrowseButton.TabIndex = 13;
+            this.DefaultSearchPathBrowseButton.Text = "Browse";
+            this.DefaultSearchPathBrowseButton.UseVisualStyleBackColor = true;
+            this.DefaultSearchPathBrowseButton.Click += new System.EventHandler(this.DefaultSearchPathBrowseButton_Click);
+            // 
+            // EightConnectedComboBox
+            // 
+            this.EightConnectedComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.EightConnectedComboBox.FormattingEnabled = true;
+            this.EightConnectedComboBox.Items.AddRange(new object[] {
+            "true",
+            "false"});
+            this.EightConnectedComboBox.Location = new System.Drawing.Point(128, 164);
+            this.EightConnectedComboBox.Name = "EightConnectedComboBox";
+            this.EightConnectedComboBox.Size = new System.Drawing.Size(76, 21);
+            this.EightConnectedComboBox.TabIndex = 14;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 167);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(86, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Eight Connected";
+            // 
             // SettingsView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(438, 226);
+            this.ClientSize = new System.Drawing.Size(438, 239);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.EightConnectedComboBox);
             this.Controls.Add(this.DefaultSearchPathBrowseButton);
             this.Controls.Add(this.DefaultSearchPathTextBox);
             this.Controls.Add(this.label4);
@@ -229,5 +254,7 @@
         private System.Windows.Forms.Button DefaultSearchPathBrowseButton;
         private System.Windows.Forms.TextBox DefaultSearchPathTextBox;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox EightConnectedComboBox;
+        private System.Windows.Forms.Label label5;
     }
 }

@@ -5,4 +5,5 @@
   <SimilarityThreshold>0.0</SimilarityThreshold>
   <RelevanceThreshold>0.05</RelevanceThreshold>
   <CenterAmount>0.5</CenterAmount>
+  <EightConnected>false</EightConnected>
 </Settings>

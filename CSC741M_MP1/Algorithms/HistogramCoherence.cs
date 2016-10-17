@@ -1,5 +1,6 @@
 ﻿using ColorMine.ColorSpaces;
 using CSC741M_MP1.Algorithms.Helpers;
+using CSC741M_MP1.Algorithms.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,17 +10,6 @@ using System.Threading.Tasks;
 
 namespace CSC741M_MP1.Algorithms
 {
-    public class CoherencePair
-    {
-        public double coherent { get; set; }
-        public double nonCoherent { get; set; }
-        public CoherencePair(double coherent, double nonCoherent)
-        {
-            this.coherent = coherent;
-            this.nonCoherent = nonCoherent;
-        }
-    }
-
     public class HistogramCoherence : Algorithm
     {
         public override AlgorithmEnum getAlgorithmEnum()

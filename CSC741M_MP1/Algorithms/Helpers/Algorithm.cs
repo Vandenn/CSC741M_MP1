@@ -8,15 +8,23 @@ using System.Threading.Tasks;
 
 namespace CSC741M_MP1
 {
+    /// <summary>
+    /// Base class for all the CBIR algorithms.
+    /// </summary>
     public abstract class Algorithm
     {
+        // Event properties for updating process/algorithm progress
         public delegate void ProgressUpdateEvent(double progress);
         public event ProgressUpdateEvent ProgressUpdate;
 
+        // Function prototypes that children must implement
         public abstract List<String> generateResults(String queryPath);
         public abstract AlgorithmEnum getAlgorithmEnum();
 
+        // Reference to program settings singleton
         protected Settings settings;
+
+        // List of the paths of database images
         protected List<string> dataImagePaths;
 
         protected Algorithm()
@@ -25,6 +33,10 @@ namespace CSC741M_MP1
             dataImagePaths = Directory.GetFiles(settings.DatabaseImagesPath).Where(p => p.EndsWith(".jpg") || p.EndsWith(".jpeg")).ToList();
         }
 
+        /// <summary>
+        /// Function to be called by children every time the algorithm's progress updates.
+        /// </summary>
+        /// <param name="progress">Progress percentage</param>
         protected void raiseProgressUpdate(double progress)
         {
             ProgressUpdate(progress);

@@ -10,8 +10,10 @@ namespace CSC741M_MP1
 {
     public class AlgorithmHandler
     {
+        // Singleton instance
         private static AlgorithmHandler _instance;
 
+        // All algorithm choices
         private List<Algorithm> algorithms;
 
         protected AlgorithmHandler()
@@ -34,15 +36,15 @@ namespace CSC741M_MP1
             CIEConvert.initialize();
             Algorithm toBeRun = algorithms.FirstOrDefault(a => a.getAlgorithmEnum() == algorithm);
             if (toBeRun != null)
-            {
                 return toBeRun.generateResults(queryPath);
-            }
             else
-            {
                 return new List<string>();
-            }
         }
 
+        /// <summary>
+        /// Get the names of all available algorithms.
+        /// </summary>
+        /// <returns>Names of available algorithms</returns>
         public List<string> getAllAlgorithmNames()
         {
             List<string> algorithmNames = new List<String>();

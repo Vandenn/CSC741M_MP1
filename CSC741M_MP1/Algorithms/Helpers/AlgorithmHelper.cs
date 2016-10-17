@@ -8,17 +8,6 @@ using System.Threading.Tasks;
 
 namespace CSC741M_MP1.Algorithms.Helpers
 {
-    public class ResultData
-    {
-        public string path { get; set; }
-        public double similarity { get; set; }
-        public ResultData(string path, double similarity)
-        {
-            this.path = path;
-            this.similarity = similarity;
-        }
-    }
-
     public class AlgorithmHelper
     {
         public static Luv[,] convertImageToLUV(string path)

@@ -1,5 +1,6 @@
 ﻿using ColorMine.ColorSpaces;
 using CSC741M_MP1.Algorithms.Helpers;
+using CSC741M_MP1.Algorithms.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,17 +10,6 @@ using System.Threading.Tasks;
 
 namespace CSC741M_MP1.Algorithms
 {
-    public class CenteringPair
-    {
-        public double center { get; set; }
-        public double nonCenter { get; set; }
-        public CenteringPair(double center, double nonCenter)
-        {
-            this.center = center;
-            this.nonCenter = nonCenter;
-        }
-    }
-
     public class CHCentering: Algorithm
     {
         public override AlgorithmEnum getAlgorithmEnum()

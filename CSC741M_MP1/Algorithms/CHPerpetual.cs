@@ -1,5 +1,6 @@
 ﻿using ColorMine.ColorSpaces;
 using CSC741M_MP1.Algorithms.Helpers;
+using CSC741M_MP1.Algorithms.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;

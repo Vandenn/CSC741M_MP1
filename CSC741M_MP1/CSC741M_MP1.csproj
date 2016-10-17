@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Model\CenteringPair.cs" />
+    <Compile Include="Algorithms\Model\CoherencePair.cs" />
+    <Compile Include="Algorithms\Model\ResultData.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="View\AboutView.cs">
       <SubType>Form</SubType>

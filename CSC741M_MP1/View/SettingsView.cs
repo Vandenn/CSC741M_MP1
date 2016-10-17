@@ -29,6 +29,7 @@ namespace CSC741M_MP1
             SimilarityThresholdTextBox.Text = settings.SimilarityThreshold.ToString();
             RelevanceThresholdTextBox.Text = settings.RelevanceThreshold.ToString();
             CenterAmountTextBox.Text = settings.CenterAmount.ToString();
+            EightConnectedComboBox.SelectedIndex = settings.EightConnected ? 0 : 1;
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -46,6 +47,7 @@ namespace CSC741M_MP1
                 settings.SimilarityThreshold = similarityThreshold;
                 settings.RelevanceThreshold = relevanceThreshold;
                 settings.CenterAmount = centerAmount;
+                settings.EightConnected = EightConnectedComboBox.SelectedIndex == 0 ? true : false;
                 settings.saveSettings();
                 Close();
             }
