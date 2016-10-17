@@ -22,9 +22,6 @@ namespace CSC741M_MP1.Algorithms
 
     public class HistogramCoherence : Algorithm
     {
-        private const double SIGNIFICANT_QUERY_THRESHOLD = 0.05;
-        private const double SIMILARITY_THRESHOLD = 0.0;
-
         public override AlgorithmEnum getAlgorithmEnum()
         {
             return AlgorithmEnum.HistogramRefinementColorCoherence;
@@ -43,8 +40,6 @@ namespace CSC741M_MP1.Algorithms
             CoherenceCalculator queryCalculator = new CoherenceCalculator(convertedQueryImage);
             Dictionary<int, CoherencePair> queryImageCoherenceVector = queryCalculator.generateCoherenceVector();
 
-            List<string> dataImagePaths = Directory.GetFiles(AlgorithmHandler.IMAGES_DIRECTORY).ToList();
-
             string path;
             Luv[,] convertedImage;
             CoherenceCalculator calculator;
@@ -56,8 +51,8 @@ namespace CSC741M_MP1.Algorithms
                 convertedImage = AlgorithmHelper.convertImageToLUV(path);
                 calculator = new CoherenceCalculator(convertedImage);
                 vector = calculator.generateCoherenceVector();
-                similarity = getSimilarity(queryImageCoherenceVector, vector, SIGNIFICANT_QUERY_THRESHOLD);
-                if (similarity >= SIMILARITY_THRESHOLD)
+                similarity = getSimilarity(queryImageCoherenceVector, vector, settings.RelevanceThreshold);
+                if (similarity >= settings.SimilarityThreshold)
                 {
                     results.Add(new ResultData(path, similarity));
                 }

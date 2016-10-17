@@ -22,10 +22,6 @@ namespace CSC741M_MP1.Algorithms
 
     public class CHCentering: Algorithm
     {
-        private const double SIGNIFICANT_QUERY_THRESHOLD = 0.05;
-        private const double SIMILARITY_THRESHOLD = 0.0;
-        private const double CENTERING_PERCENTAGE = 0.5;
-
         public override AlgorithmEnum getAlgorithmEnum()
         {
             return AlgorithmEnum.CHCentering;
@@ -43,8 +39,6 @@ namespace CSC741M_MP1.Algorithms
             Luv[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
             Dictionary<int, CenteringPair> queryImageCenteringVector = generateCenteringVector(convertedQueryImage);
 
-            List<string> dataImagePaths = Directory.GetFiles(AlgorithmHandler.IMAGES_DIRECTORY).ToList();
-
             string path;
             Luv[,] convertedImage;
             Dictionary<int, CenteringPair> vector;
@@ -54,8 +48,8 @@ namespace CSC741M_MP1.Algorithms
                 path = dataImagePaths[i];
                 convertedImage = AlgorithmHelper.convertImageToLUV(path);
                 vector = generateCenteringVector(convertedImage);
-                similarity = getSimilarity(queryImageCenteringVector, vector, SIGNIFICANT_QUERY_THRESHOLD);
-                if (similarity >= SIMILARITY_THRESHOLD)
+                similarity = getSimilarity(queryImageCenteringVector, vector, settings.RelevanceThreshold);
+                if (similarity >= settings.SimilarityThreshold)
                 {
                     results.Add(new ResultData(path, similarity));
                 }
@@ -71,7 +65,7 @@ namespace CSC741M_MP1.Algorithms
         private Dictionary<int, CenteringPair> generateCenteringVector(Luv[,] image)
         {
             Dictionary<int, CenteringPair> vector = new Dictionary<int, CenteringPair>();
-            double borderPercentage = ((1 - CENTERING_PERCENTAGE) / 2);
+            double borderPercentage = ((1 - settings.CenterAmount) / 2);
 
             for (int i = 0; i < image.GetLength(0); i++)
             {

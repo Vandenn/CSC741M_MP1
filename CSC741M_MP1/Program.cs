@@ -17,7 +17,7 @@ namespace CSC741M_MP1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Main m = new Main();
+            MainView m = new MainView();
             Application.Run(m);
         }
     }

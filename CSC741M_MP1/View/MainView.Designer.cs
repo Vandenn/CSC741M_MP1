@@ -1,6 +1,6 @@
 ﻿namespace CSC741M_MP1
 {
-    partial class Main
+    partial class MainView
     {
         /// <summary>
         /// Required designer variable.
@@ -37,7 +37,13 @@
             this.resultImagesPanel = new System.Windows.Forms.Panel();
             this.queryPictureBox = new System.Windows.Forms.PictureBox();
             this.algorithmProgressBar = new System.Windows.Forms.ProgressBar();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutThisMPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.queryPictureBox)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // algorithmComboBox
@@ -47,14 +53,14 @@
             this.algorithmComboBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.algorithmComboBox.ForeColor = System.Drawing.SystemColors.WindowText;
             this.algorithmComboBox.FormattingEnabled = true;
-            this.algorithmComboBox.Location = new System.Drawing.Point(130, 40);
+            this.algorithmComboBox.Location = new System.Drawing.Point(130, 58);
             this.algorithmComboBox.Name = "algorithmComboBox";
             this.algorithmComboBox.Size = new System.Drawing.Size(362, 21);
             this.algorithmComboBox.TabIndex = 0;
             // 
             // filePathTextBox
             // 
-            this.filePathTextBox.Location = new System.Drawing.Point(130, 14);
+            this.filePathTextBox.Location = new System.Drawing.Point(130, 32);
             this.filePathTextBox.Name = "filePathTextBox";
             this.filePathTextBox.Size = new System.Drawing.Size(288, 20);
             this.filePathTextBox.TabIndex = 1;
@@ -63,7 +69,7 @@
             // algorithmLabel
             // 
             this.algorithmLabel.AutoSize = true;
-            this.algorithmLabel.Location = new System.Drawing.Point(13, 43);
+            this.algorithmLabel.Location = new System.Drawing.Point(13, 61);
             this.algorithmLabel.Name = "algorithmLabel";
             this.algorithmLabel.Size = new System.Drawing.Size(50, 13);
             this.algorithmLabel.TabIndex = 2;
@@ -72,7 +78,7 @@
             // filePathLabel
             // 
             this.filePathLabel.AutoSize = true;
-            this.filePathLabel.Location = new System.Drawing.Point(13, 17);
+            this.filePathLabel.Location = new System.Drawing.Point(13, 35);
             this.filePathLabel.Name = "filePathLabel";
             this.filePathLabel.Size = new System.Drawing.Size(111, 13);
             this.filePathLabel.TabIndex = 3;
@@ -82,7 +88,7 @@
             // 
             this.BrowseButton.BackColor = System.Drawing.Color.White;
             this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseButton.Location = new System.Drawing.Point(424, 12);
+            this.BrowseButton.Location = new System.Drawing.Point(424, 30);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(68, 23);
             this.BrowseButton.TabIndex = 4;
@@ -95,7 +101,7 @@
             this.runButton.BackColor = System.Drawing.Color.White;
             this.runButton.Enabled = false;
             this.runButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.runButton.Location = new System.Drawing.Point(424, 67);
+            this.runButton.Location = new System.Drawing.Point(424, 85);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(68, 23);
             this.runButton.TabIndex = 5;
@@ -108,7 +114,7 @@
             this.resultImagesPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.resultImagesPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.resultImagesPanel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.resultImagesPanel.Location = new System.Drawing.Point(16, 181);
+            this.resultImagesPanel.Location = new System.Drawing.Point(16, 199);
             this.resultImagesPanel.Name = "resultImagesPanel";
             this.resultImagesPanel.Size = new System.Drawing.Size(476, 247);
             this.resultImagesPanel.TabIndex = 6;
@@ -117,7 +123,7 @@
             // 
             this.queryPictureBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.queryPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.queryPictureBox.Location = new System.Drawing.Point(196, 87);
+            this.queryPictureBox.Location = new System.Drawing.Point(196, 105);
             this.queryPictureBox.Name = "queryPictureBox";
             this.queryPictureBox.Size = new System.Drawing.Size(128, 85);
             this.queryPictureBox.TabIndex = 7;
@@ -125,17 +131,58 @@
             // 
             // algorithmProgressBar
             // 
-            this.algorithmProgressBar.Location = new System.Drawing.Point(16, 442);
+            this.algorithmProgressBar.Location = new System.Drawing.Point(16, 460);
             this.algorithmProgressBar.Name = "algorithmProgressBar";
             this.algorithmProgressBar.Size = new System.Drawing.Size(476, 23);
             this.algorithmProgressBar.TabIndex = 8;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(504, 24);
+            this.menuStrip1.TabIndex = 9;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configureToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutThisMPToolStripMenuItem});
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            // 
+            // aboutThisMPToolStripMenuItem
+            // 
+            this.aboutThisMPToolStripMenuItem.Name = "aboutThisMPToolStripMenuItem";
+            this.aboutThisMPToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.aboutThisMPToolStripMenuItem.Text = "About this MP..";
+            this.aboutThisMPToolStripMenuItem.Click += new System.EventHandler(this.aboutThisMPToolStripMenuItem_Click);
+            // 
+            // configureToolStripMenuItem
+            // 
+            this.configureToolStripMenuItem.Name = "configureToolStripMenuItem";
+            this.configureToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.configureToolStripMenuItem.Text = "Configure..";
+            this.configureToolStripMenuItem.Click += new System.EventHandler(this.configureToolStripMenuItem_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(504, 477);
+            this.ClientSize = new System.Drawing.Size(504, 497);
             this.Controls.Add(this.algorithmProgressBar);
             this.Controls.Add(this.queryPictureBox);
             this.Controls.Add(this.resultImagesPanel);
@@ -145,9 +192,13 @@
             this.Controls.Add(this.algorithmLabel);
             this.Controls.Add(this.filePathTextBox);
             this.Controls.Add(this.algorithmComboBox);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.Text = "Color-Based Image Retrieval";
             ((System.ComponentModel.ISupportInitialize)(this.queryPictureBox)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -164,6 +215,11 @@
         private System.Windows.Forms.Panel resultImagesPanel;
         private System.Windows.Forms.PictureBox queryPictureBox;
         private System.Windows.Forms.ProgressBar algorithmProgressBar;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutThisMPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configureToolStripMenuItem;
     }
 }
 

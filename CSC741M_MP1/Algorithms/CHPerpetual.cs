@@ -11,9 +11,6 @@ namespace CSC741M_MP1.Algorithms
 {
     public class CHPerpetual: Algorithm
     {
-        private const double SIGNIFICANT_QUERY_THRESHOLD = 0.05;
-        private const double SIMILARITY_THRESHOLD = 0.0;
-
         public override AlgorithmEnum getAlgorithmEnum()
         {
             return AlgorithmEnum.CHPerpetualSimilarity;
@@ -31,8 +28,6 @@ namespace CSC741M_MP1.Algorithms
             Luv[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
             Dictionary<int, double> queryImageHistogram = AlgorithmHelper.generateLUVHistogram(convertedQueryImage);
 
-            List<string> dataImagePaths = Directory.GetFiles(AlgorithmHandler.IMAGES_DIRECTORY).ToList();
-
             string path;
             Luv[,] convertedImage;
             Dictionary<int, double> histogram;
@@ -42,8 +37,11 @@ namespace CSC741M_MP1.Algorithms
                 path = dataImagePaths[i];
                 convertedImage = AlgorithmHelper.convertImageToLUV(path);
                 histogram = AlgorithmHelper.generateLUVHistogram(convertedImage);
-                similarity = getSimilarity(queryImageHistogram, histogram, SIGNIFICANT_QUERY_THRESHOLD);
-                results.Add(new ResultData(path, similarity));
+                similarity = getSimilarity(queryImageHistogram, histogram, settings.RelevanceThreshold);
+                if (similarity >= settings.SimilarityThreshold)
+                {
+                    results.Add(new ResultData(path, similarity));
+                }
                 raiseProgressUpdate((double)i / (dataImagePaths.Count - 1));
             }
 

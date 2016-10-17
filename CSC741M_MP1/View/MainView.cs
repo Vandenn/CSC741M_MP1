@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSC741M_MP1.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,20 +12,22 @@ using System.Windows.Forms;
 
 namespace CSC741M_MP1
 {
-    public partial class Main : Form
+    public partial class MainView : Form
     {
         private AlgorithmHandler algoHandler;
         private BackgroundWorker processWorker;
         private BackgroundWorker imagePanelWorker;
         private List<String> results;
+        private Settings settings;
 
-        public Main()
+        public MainView()
         {
             InitializeComponent();
 
             ///Property Initializations
             algoHandler = AlgorithmHandler.getInstance();
             results = new List<String>();
+            settings = Settings.getSettings();
 
             /// UI Initializations
             BindingSource algorithmComboBoxSource = new BindingSource();
@@ -120,7 +123,7 @@ namespace CSC741M_MP1
             OpenFileDialog browser = new OpenFileDialog();
             browser.Title = "Open Query Image";
             browser.Filter = "Query Image Files|*.jpg; *.jpeg";
-            browser.InitialDirectory = @"C:\";
+            browser.InitialDirectory = settings.DefaultSearchPath;
             browser.CheckFileExists = true;
 
             if (browser.ShowDialog() == DialogResult.OK)
@@ -169,6 +172,18 @@ namespace CSC741M_MP1
             {
                 runButton.Enabled = true;
             }
+        }
+
+        private void aboutThisMPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutView aboutForm = new AboutView();
+            aboutForm.Show();
+        }
+
+        private void configureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsView settingsForm = new SettingsView();
+            settingsForm.Show();
         }
     }
 }
