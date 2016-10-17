@@ -154,6 +154,8 @@ namespace CSC741M_MP1
             BrowseButton.Enabled = active;
             runButton.Enabled = active;
             algorithmComboBox.Enabled = active;
+            settingsToolStripMenuItem.Enabled = active;
+            aboutToolStripMenuItem.Enabled = active;
         }
 
         private void showQueryImageOnPictureBox(string path)
