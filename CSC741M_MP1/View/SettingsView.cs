@@ -30,6 +30,7 @@ namespace CSC741M_MP1
             RelevanceThresholdTextBox.Text = settings.RelevanceThreshold.ToString();
             CenterAmountTextBox.Text = settings.CenterAmount.ToString();
             EightConnectedComboBox.SelectedIndex = settings.EightConnected ? 0 : 1;
+            ConnectednessThresholdTextBox.Text = settings.ConnectednessThreshold.ToString();
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -37,10 +38,12 @@ namespace CSC741M_MP1
             double similarityThreshold = -1;
             double relevanceThreshold = -1;
             double centerAmount = -1;
+            double connectednessThreshold = -1;
             if (Directory.Exists(DatabasePathTextBox.Text) &&
                 double.TryParse(SimilarityThresholdTextBox.Text, out similarityThreshold) && similarityThreshold >= 0 && similarityThreshold <= 1 &&
                 double.TryParse(RelevanceThresholdTextBox.Text, out relevanceThreshold) && relevanceThreshold >= 0 && relevanceThreshold <= 1 &&
-                double.TryParse(CenterAmountTextBox.Text, out centerAmount) && centerAmount >= 0 && centerAmount <= 1)
+                double.TryParse(CenterAmountTextBox.Text, out centerAmount) && centerAmount >= 0 && centerAmount <= 1 &&
+                double.TryParse(ConnectednessThresholdTextBox.Text, out connectednessThreshold) && connectednessThreshold >= 0 && connectednessThreshold <= 1)
             {
                 settings.DefaultSearchPath = DefaultSearchPathTextBox.Text;
                 settings.DatabaseImagesPath = DatabasePathTextBox.Text;
@@ -48,6 +51,7 @@ namespace CSC741M_MP1
                 settings.RelevanceThreshold = relevanceThreshold;
                 settings.CenterAmount = centerAmount;
                 settings.EightConnected = EightConnectedComboBox.SelectedIndex == 0 ? true : false;
+                settings.ConnectednessThreshold = connectednessThreshold;
                 settings.saveSettings();
                 Close();
             }

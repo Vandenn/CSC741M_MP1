@@ -19,6 +19,7 @@ namespace CSC741M_MP1.Model
         private double relevanceThreshold;
         private double centerAmount;
         private bool eightConnected;
+        private double connectednessThreshold;
 
         public string DefaultSearchPath
         {
@@ -73,6 +74,15 @@ namespace CSC741M_MP1.Model
                 eightConnected = value;
             }
         }
+        public double ConnectednessThreshold
+        {
+            get { return connectednessThreshold; }
+            set
+            {
+                if (value >= 0 && value <= 1)
+                    connectednessThreshold = value;
+            }
+        }
 
         protected Settings()
         {
@@ -82,6 +92,7 @@ namespace CSC741M_MP1.Model
             relevanceThreshold = 0.05;
             centerAmount = 0.5;
             eightConnected = false;
+            connectednessThreshold = 0.01;
         }
 
         public static Settings getSettings()

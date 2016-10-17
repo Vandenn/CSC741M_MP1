@@ -6,4 +6,5 @@
   <RelevanceThreshold>0.05</RelevanceThreshold>
   <CenterAmount>0.5</CenterAmount>
   <EightConnected>false</EightConnected>
+  <ConnectednessThreshold>0.01</ConnectednessThreshold>
 </Settings>

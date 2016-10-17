@@ -16,18 +16,21 @@ namespace CSC741M_MP1.Algorithms.Helpers
     public class CoherenceCalculator
     {
         private int[,] image; // Discretized color 2D array based on image pixels
-        private int connectedCount;
-        private List<Point> startingPointQueue;
-        private Settings settings;
+        private int connectedCount; // Determines what the minimum cluster count is to be considered coherent
+        private List<Point> startingPointQueue; // List for holding the starting points when checking for coherent areas
+        private Settings settings; // Reference to settings singleton
 
-        public CoherenceCalculator(Luv[,] rawImage, double connectednessThreshold = 0.01)
+        public CoherenceCalculator(Luv[,] rawImage)
         {
             settings = Settings.getSettings();
             image = convertImageToLuvIndex(rawImage);
-            connectedCount = (int)Math.Floor(image.GetLength(0) * image.GetLength(1) * connectednessThreshold);
+            connectedCount = (int)Math.Floor(image.GetLength(0) * image.GetLength(1) * settings.ConnectednessThreshold);
             startingPointQueue = new List<Point>();
         }
 
+        /// <summary>
+        /// Function for discretizing the color space of the image.
+        /// </summary>
         private int[,] convertImageToLuvIndex(Luv[,] image)
         {
             int[,] converted = new int[image.GetLength(0), image.GetLength(1)];
@@ -95,6 +98,10 @@ namespace CSC741M_MP1.Algorithms.Helpers
             return vector;
         }
 
+        /// <summary>
+        /// Function for getting the number of pixels in the cluster where
+        /// <code>startPoint</code> is a member.
+        /// </summary>
         private int getClusterCount(Point startPoint)
         {
             int totalCount = 0;
@@ -152,9 +159,17 @@ namespace CSC741M_MP1.Algorithms.Helpers
             return totalCount;
         }
 
-        // 0 - Invalid
-        // 1 - Valid but different Color
-        // 2 - Valid and same color
+        /// <summary>
+        /// Function for checking a pixel given image coordinates.
+        /// </summary>
+        /// <param name="checkX">Pixel X coordinate in image</param>
+        /// <param name="checkY">Pixel Y coordinate in image</param>
+        /// <param name="refColor">Color to compare pixel to</param>
+        /// <returns>
+        /// 0 - Invalid
+        /// 1 - Valid but different color
+        /// 2 - Valid and same color
+        /// </returns>
         private int checkPixel(int checkX, int checkY, int refColor)
         {
             if (checkX >= 0 && checkX < image.GetLength(1) && checkY >= 0 && checkY < image.GetLength(0) && image[checkY, checkX] >= 0)

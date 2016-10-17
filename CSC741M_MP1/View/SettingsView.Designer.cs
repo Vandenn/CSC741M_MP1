@@ -43,6 +43,8 @@
             this.Tooltip1 = new System.Windows.Forms.ToolTip(this.components);
             this.DefaultSearchPathTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.ConnectednessThresholdTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.DefaultSearchPathBrowseButton = new System.Windows.Forms.Button();
             this.EightConnectedComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -60,9 +62,9 @@
             // 
             // DatabasePathTextBox
             // 
-            this.DatabasePathTextBox.Location = new System.Drawing.Point(128, 59);
+            this.DatabasePathTextBox.Location = new System.Drawing.Point(149, 59);
             this.DatabasePathTextBox.Name = "DatabasePathTextBox";
-            this.DatabasePathTextBox.Size = new System.Drawing.Size(199, 20);
+            this.DatabasePathTextBox.Size = new System.Drawing.Size(178, 20);
             this.DatabasePathTextBox.TabIndex = 1;
             this.Tooltip1.SetToolTip(this.DatabasePathTextBox, "The folder path containing the database images.");
             // 
@@ -99,7 +101,7 @@
             // 
             // SimilarityThresholdTextBox
             // 
-            this.SimilarityThresholdTextBox.Location = new System.Drawing.Point(128, 85);
+            this.SimilarityThresholdTextBox.Location = new System.Drawing.Point(149, 85);
             this.SimilarityThresholdTextBox.Name = "SimilarityThresholdTextBox";
             this.SimilarityThresholdTextBox.Size = new System.Drawing.Size(76, 20);
             this.SimilarityThresholdTextBox.TabIndex = 5;
@@ -107,7 +109,7 @@
             // 
             // RelevanceThresholdTextBox
             // 
-            this.RelevanceThresholdTextBox.Location = new System.Drawing.Point(128, 111);
+            this.RelevanceThresholdTextBox.Location = new System.Drawing.Point(149, 111);
             this.RelevanceThresholdTextBox.Name = "RelevanceThresholdTextBox";
             this.RelevanceThresholdTextBox.Size = new System.Drawing.Size(76, 20);
             this.RelevanceThresholdTextBox.TabIndex = 7;
@@ -129,7 +131,7 @@
             // 
             this.SaveButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveButton.Location = new System.Drawing.Point(173, 204);
+            this.SaveButton.Location = new System.Drawing.Point(173, 231);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(93, 23);
             this.SaveButton.TabIndex = 8;
@@ -139,7 +141,7 @@
             // 
             // CenterAmountTextBox
             // 
-            this.CenterAmountTextBox.Location = new System.Drawing.Point(128, 137);
+            this.CenterAmountTextBox.Location = new System.Drawing.Point(149, 137);
             this.CenterAmountTextBox.Name = "CenterAmountTextBox";
             this.CenterAmountTextBox.Size = new System.Drawing.Size(76, 20);
             this.CenterAmountTextBox.TabIndex = 10;
@@ -159,9 +161,9 @@
             // 
             // DefaultSearchPathTextBox
             // 
-            this.DefaultSearchPathTextBox.Location = new System.Drawing.Point(128, 33);
+            this.DefaultSearchPathTextBox.Location = new System.Drawing.Point(149, 33);
             this.DefaultSearchPathTextBox.Name = "DefaultSearchPathTextBox";
-            this.DefaultSearchPathTextBox.Size = new System.Drawing.Size(199, 20);
+            this.DefaultSearchPathTextBox.Size = new System.Drawing.Size(178, 20);
             this.DefaultSearchPathTextBox.TabIndex = 12;
             this.Tooltip1.SetToolTip(this.DefaultSearchPathTextBox, "The default starting folder when searching for a query image.");
             // 
@@ -174,6 +176,26 @@
             this.label4.TabIndex = 11;
             this.label4.Text = "Default Search Path";
             this.Tooltip1.SetToolTip(this.label4, "The default starting folder when searching for a query image.");
+            // 
+            // ConnectednessThresholdTextBox
+            // 
+            this.ConnectednessThresholdTextBox.Location = new System.Drawing.Point(149, 191);
+            this.ConnectednessThresholdTextBox.Name = "ConnectednessThresholdTextBox";
+            this.ConnectednessThresholdTextBox.Size = new System.Drawing.Size(76, 20);
+            this.ConnectednessThresholdTextBox.TabIndex = 17;
+            this.Tooltip1.SetToolTip(this.ConnectednessThresholdTextBox, "The percentage of centering represented as a floating point number when using the" +
+        " Color Histogram with Centering Refinement algorithm.");
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 194);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(131, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Connectedness Threshold";
+            this.Tooltip1.SetToolTip(this.label6, "The percentage of centering represented as a floating point number when using the" +
+        " Color Histogram with Centering Refinement algorithm.");
             // 
             // DefaultSearchPathBrowseButton
             // 
@@ -193,7 +215,7 @@
             this.EightConnectedComboBox.Items.AddRange(new object[] {
             "true",
             "false"});
-            this.EightConnectedComboBox.Location = new System.Drawing.Point(128, 164);
+            this.EightConnectedComboBox.Location = new System.Drawing.Point(149, 164);
             this.EightConnectedComboBox.Name = "EightConnectedComboBox";
             this.EightConnectedComboBox.Size = new System.Drawing.Size(76, 21);
             this.EightConnectedComboBox.TabIndex = 14;
@@ -212,7 +234,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(438, 239);
+            this.ClientSize = new System.Drawing.Size(438, 266);
+            this.Controls.Add(this.ConnectednessThresholdTextBox);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.EightConnectedComboBox);
             this.Controls.Add(this.DefaultSearchPathBrowseButton);
@@ -256,5 +280,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox EightConnectedComboBox;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox ConnectednessThresholdTextBox;
+        private System.Windows.Forms.Label label6;
     }
 }

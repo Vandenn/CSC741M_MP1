@@ -26,10 +26,12 @@ namespace CSC741M_MP1.Algorithms
 
             List<ResultData> results = new List<ResultData>();
  
+            // Query image initialization
             Luv[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
             CoherenceCalculator queryCalculator = new CoherenceCalculator(convertedQueryImage);
             Dictionary<int, CoherencePair> queryImageCoherenceVector = queryCalculator.generateCoherenceVector();
 
+            // Preprocess and compare all database images
             string path;
             Luv[,] convertedImage;
             CoherenceCalculator calculator;

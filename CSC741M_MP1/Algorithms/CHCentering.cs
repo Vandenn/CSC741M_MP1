@@ -26,9 +26,11 @@ namespace CSC741M_MP1.Algorithms
 
             List<ResultData> results = new List<ResultData>();
 
+            // Query image initialization
             Luv[,] convertedQueryImage = AlgorithmHelper.convertImageToLUV(queryPath);
             Dictionary<int, CenteringPair> queryImageCenteringVector = generateCenteringVector(convertedQueryImage);
 
+            // Preprocess and compare all database images
             string path;
             Luv[,] convertedImage;
             Dictionary<int, CenteringPair> vector;
