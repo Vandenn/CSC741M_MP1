@@ -63,9 +63,14 @@ namespace CSC741M_MP1.Algorithms
             for (int i = 0; i < query.Count; i++)
             {
                 int queryKey = query.Keys.ElementAt(i);
-                if (query[queryKey].coherent + query[queryKey].nonCoherent >= threshold)
+
+                if (query[queryKey].coherent >= threshold)
                 {
-                    compilation.Add(queryKey, getColorSimilarity(queryKey, query, data));
+                    compilation.Add(queryKey, getColorExactSimilarity(queryKey, query, data, true));
+                }
+                if (query[queryKey].nonCoherent >= threshold)
+                {
+                    compilation.Add(-queryKey, getColorExactSimilarity(queryKey, query, data, false));
                 }
             }
 
@@ -80,6 +85,13 @@ namespace CSC741M_MP1.Algorithms
             return total;
         }
 
+        public static double getColorExactSimilarity(int colorIndex, Dictionary<int, CoherencePair> query, Dictionary<int, CoherencePair> data, bool coherent)
+        {
+            double dataNH = data.ContainsKey(colorIndex) ? coherent ? data[colorIndex].coherent : data[colorIndex].nonCoherent : 0.0;
+            return 1 - Math.Abs(((coherent ? query[colorIndex].coherent : query[colorIndex].nonCoherent) - dataNH) / Math.Max(coherent ? query[colorIndex].coherent : query[colorIndex].nonCoherent, dataNH));
+        }
+
+        /*// Old Implementation
         private double getColorSimilarity(int colorIndex, Dictionary<int, CoherencePair> query, Dictionary<int, CoherencePair> data)
         {
             CoherencePair dataCP = new CoherencePair(0, 0);
@@ -88,6 +100,6 @@ namespace CSC741M_MP1.Algorithms
                 dataCP = data[colorIndex];
             }
             return 1 - (Math.Abs(query[colorIndex].coherent - dataCP.coherent) / Math.Max(query[colorIndex].coherent, dataCP.coherent) + Math.Abs(query[colorIndex].nonCoherent - dataCP.nonCoherent) / Math.Max(query[colorIndex].nonCoherent, dataCP.nonCoherent)) / 2;
-        }
+        }*/
     }
 }

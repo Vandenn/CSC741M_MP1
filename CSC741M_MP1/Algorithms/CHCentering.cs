@@ -110,9 +110,14 @@ namespace CSC741M_MP1.Algorithms
             for (int i = 0; i < query.Count; i++)
             {
                 int queryKey = query.Keys.ElementAt(i);
-                if (query[queryKey].center + query[queryKey].nonCenter >= threshold)
+                
+                if (query[queryKey].center >= threshold)
                 {
-                    compilation.Add(queryKey, getColorSimilarity(queryKey, query, data));
+                    compilation.Add(queryKey, getColorExactSimilarity(queryKey, query, data, true));
+                }
+                if (query[queryKey].nonCenter >= threshold)
+                {
+                    compilation.Add(-queryKey, getColorExactSimilarity(queryKey, query, data, false));
                 }
             }
 
@@ -127,6 +132,13 @@ namespace CSC741M_MP1.Algorithms
             return total;
         }
 
+        public static double getColorExactSimilarity(int colorIndex, Dictionary<int, CenteringPair> query, Dictionary<int, CenteringPair> data, bool center)
+        {
+            double dataNH = data.ContainsKey(colorIndex) ? center ? data[colorIndex].center : data[colorIndex].nonCenter : 0.0;
+            return 1 - Math.Abs(((center ? query[colorIndex].center : query[colorIndex].nonCenter) - dataNH) / Math.Max(center ? query[colorIndex].center : query[colorIndex].nonCenter, dataNH));
+        }
+
+        /*// Old Implementation
         private double getColorSimilarity(int colorIndex, Dictionary<int, CenteringPair> query, Dictionary<int, CenteringPair> data)
         {
             CenteringPair dataCP = new CenteringPair(0, 0);
@@ -135,6 +147,6 @@ namespace CSC741M_MP1.Algorithms
                 dataCP = data[colorIndex];
             }
             return 1 - (Math.Abs(query[colorIndex].center - dataCP.center) / Math.Max(query[colorIndex].center, dataCP.center) + Math.Abs(query[colorIndex].nonCenter - dataCP.nonCenter) / Math.Max(query[colorIndex].nonCenter, dataCP.nonCenter)) / 2;
-        }
+        }*/
     }
 }
