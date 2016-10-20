@@ -106,27 +106,24 @@ namespace CSC741M_MP1.Algorithms
 
         private double getSimilarity(Dictionary<int, CenteringPair> query, Dictionary<int, CenteringPair> data, double threshold)
         {
-            Dictionary<int, double> compilation = new Dictionary<int, double>();
+            Dictionary<int, double> compilationCenter = new Dictionary<int, double>();
+            Dictionary<int, double> compilationNonCenter = new Dictionary<int, double>();
             for (int i = 0; i < query.Count; i++)
             {
                 int queryKey = query.Keys.ElementAt(i);
                 
                 if (query[queryKey].center >= threshold)
                 {
-                    compilation.Add(queryKey, getColorExactSimilarity(queryKey, query, data, true));
+                    compilationCenter.Add(queryKey, getColorExactSimilarity(queryKey, query, data, true));
                 }
                 if (query[queryKey].nonCenter >= threshold)
                 {
-                    compilation.Add(-queryKey, getColorExactSimilarity(queryKey, query, data, false));
+                    compilationNonCenter.Add(-queryKey, getColorExactSimilarity(queryKey, query, data, false));
                 }
             }
 
-            double total = 0.0;
-            int keyCount = compilation.Keys.Count;
-            foreach (int key in compilation.Keys)
-            {
-                total += compilation[key];
-            }
+            int keyCount = compilationCenter.Keys.Count + compilationNonCenter.Keys.Count;
+            double total = compilationCenter.Sum(x => x.Value) + compilationNonCenter.Sum(x => x.Value);
             total /= keyCount;
 
             return total;
@@ -134,8 +131,9 @@ namespace CSC741M_MP1.Algorithms
 
         public static double getColorExactSimilarity(int colorIndex, Dictionary<int, CenteringPair> query, Dictionary<int, CenteringPair> data, bool center)
         {
+            double queryNH = center ? query[colorIndex].center : query[colorIndex].nonCenter;
             double dataNH = data.ContainsKey(colorIndex) ? center ? data[colorIndex].center : data[colorIndex].nonCenter : 0.0;
-            return 1 - Math.Abs(((center ? query[colorIndex].center : query[colorIndex].nonCenter) - dataNH) / Math.Max(center ? query[colorIndex].center : query[colorIndex].nonCenter, dataNH));
+            return 1 - Math.Abs((queryNH - dataNH) / Math.Max(queryNH, dataNH));
         }
 
         /*// Old Implementation

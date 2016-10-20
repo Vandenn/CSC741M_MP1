@@ -59,27 +59,24 @@ namespace CSC741M_MP1.Algorithms
 
         private double getSimilarity(Dictionary<int, CoherencePair> query, Dictionary<int, CoherencePair> data, double threshold)
         {
-            Dictionary<int, double> compilation = new Dictionary<int, double>();
+            Dictionary<int, double> compilationCoherent = new Dictionary<int, double>();
+            Dictionary<int, double> compilationNonCoherent = new Dictionary<int, double>();
             for (int i = 0; i < query.Count; i++)
             {
                 int queryKey = query.Keys.ElementAt(i);
 
                 if (query[queryKey].coherent >= threshold)
                 {
-                    compilation.Add(queryKey, getColorExactSimilarity(queryKey, query, data, true));
+                    compilationCoherent.Add(queryKey, getColorExactSimilarity(queryKey, query, data, true));
                 }
                 if (query[queryKey].nonCoherent >= threshold)
                 {
-                    compilation.Add(-queryKey, getColorExactSimilarity(queryKey, query, data, false));
+                    compilationNonCoherent.Add(-queryKey, getColorExactSimilarity(queryKey, query, data, false));
                 }
             }
 
-            double total = 0.0;
-            int keyCount = compilation.Keys.Count;
-            foreach (int key in compilation.Keys)
-            {
-                total += compilation[key];
-            }
+            int keyCount = compilationCoherent.Keys.Count + compilationNonCoherent.Keys.Count;
+            double total = compilationCoherent.Sum(x => x.Value) + compilationNonCoherent.Sum(x => x.Value);
             total /= keyCount;
 
             return total;
@@ -87,8 +84,9 @@ namespace CSC741M_MP1.Algorithms
 
         public static double getColorExactSimilarity(int colorIndex, Dictionary<int, CoherencePair> query, Dictionary<int, CoherencePair> data, bool coherent)
         {
+            double queryNH = coherent ? query[colorIndex].coherent : query[colorIndex].nonCoherent;
             double dataNH = data.ContainsKey(colorIndex) ? coherent ? data[colorIndex].coherent : data[colorIndex].nonCoherent : 0.0;
-            return 1 - Math.Abs(((coherent ? query[colorIndex].coherent : query[colorIndex].nonCoherent) - dataNH) / Math.Max(coherent ? query[colorIndex].coherent : query[colorIndex].nonCoherent, dataNH));
+            return 1 - Math.Abs((queryNH - dataNH) / Math.Max(queryNH, dataNH));
         }
 
         /*// Old Implementation
