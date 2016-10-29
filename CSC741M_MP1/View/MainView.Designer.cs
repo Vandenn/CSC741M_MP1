@@ -39,9 +39,11 @@
             this.algorithmProgressBar = new System.Windows.Forms.ProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutThisMPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.configureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.evaluationResultLog = new System.Windows.Forms.TextBox();
+            this.evaluationResultLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.queryPictureBox)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -155,6 +157,13 @@
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
+            // configureToolStripMenuItem
+            // 
+            this.configureToolStripMenuItem.Name = "configureToolStripMenuItem";
+            this.configureToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.configureToolStripMenuItem.Text = "Configure..";
+            this.configureToolStripMenuItem.Click += new System.EventHandler(this.configureToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -170,19 +179,32 @@
             this.aboutThisMPToolStripMenuItem.Text = "About this MP..";
             this.aboutThisMPToolStripMenuItem.Click += new System.EventHandler(this.aboutThisMPToolStripMenuItem_Click);
             // 
-            // configureToolStripMenuItem
+            // evaluationResultLog
             // 
-            this.configureToolStripMenuItem.Name = "configureToolStripMenuItem";
-            this.configureToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.configureToolStripMenuItem.Text = "Configure..";
-            this.configureToolStripMenuItem.Click += new System.EventHandler(this.configureToolStripMenuItem_Click);
+            this.evaluationResultLog.Location = new System.Drawing.Point(16, 511);
+            this.evaluationResultLog.Multiline = true;
+            this.evaluationResultLog.Name = "evaluationResultLog";
+            this.evaluationResultLog.ReadOnly = true;
+            this.evaluationResultLog.Size = new System.Drawing.Size(476, 86);
+            this.evaluationResultLog.TabIndex = 10;
             // 
-            // Main
+            // evaluationResultLabel
+            // 
+            this.evaluationResultLabel.AutoSize = true;
+            this.evaluationResultLabel.Location = new System.Drawing.Point(13, 495);
+            this.evaluationResultLabel.Name = "evaluationResultLabel";
+            this.evaluationResultLabel.Size = new System.Drawing.Size(111, 13);
+            this.evaluationResultLabel.TabIndex = 11;
+            this.evaluationResultLabel.Text = "Evaluation Result Log";
+            // 
+            // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(504, 497);
+            this.ClientSize = new System.Drawing.Size(504, 609);
+            this.Controls.Add(this.evaluationResultLabel);
+            this.Controls.Add(this.evaluationResultLog);
             this.Controls.Add(this.algorithmProgressBar);
             this.Controls.Add(this.queryPictureBox);
             this.Controls.Add(this.resultImagesPanel);
@@ -194,8 +216,9 @@
             this.Controls.Add(this.algorithmComboBox);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Main";
+            this.Name = "MainView";
             this.Text = "Color-Based Image Retrieval";
+            this.Load += new System.EventHandler(this.MainView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.queryPictureBox)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -220,6 +243,8 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutThisMPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configureToolStripMenuItem;
+        private System.Windows.Forms.TextBox evaluationResultLog;
+        private System.Windows.Forms.Label evaluationResultLabel;
     }
 }
 

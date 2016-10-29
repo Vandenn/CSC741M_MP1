@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<goldStandard>
+  <files>
+    <file>
+      <filename>0</filename>
+      <results>
+        <result>0</result>
+        <result>17</result>
+        <result>19</result>
+        <result>22</result>
+        <result>23</result>
+        <result>25</result>
+      </results>
+    </file>
+    <file>
+      <filename>100</filename>
+      <results>
+        <result>100</result>
+        <result>111</result>
+        <result>120</result>
+        <result>125</result>
+        <result>165</result>
+      </results>
+    </file>
+  </files>
+</goldStandard>

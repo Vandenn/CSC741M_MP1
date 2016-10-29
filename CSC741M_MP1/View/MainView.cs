@@ -1,4 +1,5 @@
-﻿using CSC741M_MP1.Model;
+﻿using CSC741M_MP1.Algorithms.Helpers;
+using CSC741M_MP1.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace CSC741M_MP1
         private BackgroundWorker imagePanelWorker;
         private List<String> results;
         private Settings settings;
+        private GoldStandard goldStandard;
 
         public MainView()
         {
@@ -54,6 +56,12 @@ namespace CSC741M_MP1
 
         }
 
+        private void MainView_Load(object sender, EventArgs e)
+        {
+            CIEConvert.initialize();
+            goldStandard = GoldStandard.getInstance();
+        }
+
         private void process_DoWork(object sender, DoWorkEventArgs e)
         {
             object[] parameters = e.Argument as object[];
@@ -82,6 +90,7 @@ namespace CSC741M_MP1
             toggleFieldsAndButtons(true);
             resultImagesPanel.Controls.Clear();
             imagePanelWorker.RunWorkerAsync(results);
+            showEvaluationResults();
         }
 
         private void imagePanelWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -162,6 +171,18 @@ namespace CSC741M_MP1
         {
             queryPictureBox.Image = Image.FromFile(path);
             queryPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
+
+        private void showEvaluationResults()
+        {
+            if (goldStandard.calculateEvaluation(filePathTextBox.Text, results))
+            {
+                evaluationResultLog.Text = String.Format("Results for {0}:{1}Precision: {2}{3}Recall: {4}{5}F-Measure: {6}", 
+                    filePathTextBox.Text, Environment.NewLine,
+                    goldStandard.getPrecision(), Environment.NewLine,
+                    goldStandard.getRecall(), Environment.NewLine,
+                    goldStandard.getFmeasure());
+            }
         }
 
         private void filePathTextBox_TextChanged(object sender, EventArgs e)

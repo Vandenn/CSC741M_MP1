@@ -33,7 +33,6 @@ namespace CSC741M_MP1
 
         public List<string> runAlgorithm(string queryPath, AlgorithmEnum algorithm)
         {
-            CIEConvert.initialize();
             Algorithm toBeRun = algorithms.FirstOrDefault(a => a.getAlgorithmEnum() == algorithm);
             if (toBeRun != null)
                 return toBeRun.generateResults(queryPath);
