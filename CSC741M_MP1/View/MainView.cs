@@ -104,7 +104,7 @@ namespace CSC741M_MP1
                 PictureBox picture = new PictureBox();
                 picture.Image = Image.FromFile(path);
                 picture.Location = new Point(x, y);
-                picture.SizeMode = PictureBoxSizeMode.CenterImage;
+                picture.SizeMode = PictureBoxSizeMode.StretchImage;
                 x += picture.Width + 10;
                 maxHeight = Math.Max(maxHeight, picture.Height);
                 if (x > this.ClientSize.Width - picture.Width)
