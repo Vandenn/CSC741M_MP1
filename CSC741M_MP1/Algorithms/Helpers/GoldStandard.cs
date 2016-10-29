@@ -9,6 +9,10 @@ using System.Xml.Serialization;
 
 namespace CSC741M_MP1.Algorithms.Helpers
 {
+    /// <summary>
+    /// Gold Standard Image Files retrieved from:
+    /// http://wang.ist.psu.edu/~jwang/test1.zip
+    /// </summary>
     [XmlRoot("goldStandard")]
     public class GoldStandard
     {
