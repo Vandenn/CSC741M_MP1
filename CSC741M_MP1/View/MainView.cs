@@ -18,9 +18,12 @@ namespace CSC741M_MP1
         private AlgorithmHandler algoHandler;
         private BackgroundWorker processWorker;
         private BackgroundWorker imagePanelWorker;
+        private BackgroundWorker testProcessWorker;
         private List<String> results;
         private Settings settings;
         private GoldStandard goldStandard;
+        private double testProgressValueLO;
+        private double testProgressValueHI;
 
         public MainView()
         {
@@ -30,6 +33,8 @@ namespace CSC741M_MP1
             algoHandler = AlgorithmHandler.getInstance();
             results = new List<String>();
             settings = Settings.getSettings();
+            testProgressValueLO = 0.0;
+            testProgressValueHI = 0.0;
 
             /// UI Initializations
             BindingSource algorithmComboBoxSource = new BindingSource();
@@ -53,6 +58,13 @@ namespace CSC741M_MP1
             imagePanelWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler
                     (imagePanelWorker_RunWorkerCompleted);
             imagePanelWorker.WorkerReportsProgress = true;
+            testProcessWorker = new BackgroundWorker();
+            testProcessWorker.DoWork += new DoWorkEventHandler(testProcess_DoWork);
+            testProcessWorker.ProgressChanged += new ProgressChangedEventHandler
+                    (testProcess_ProgressChanged);
+            testProcessWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler
+                    (testProcess_RunWorkerCompleted);
+            testProcessWorker.WorkerReportsProgress = true;
 
         }
 
@@ -165,6 +177,7 @@ namespace CSC741M_MP1
             algorithmComboBox.Enabled = active;
             settingsToolStripMenuItem.Enabled = active;
             aboutToolStripMenuItem.Enabled = active;
+            runTestSetButton.Enabled = active;
         }
 
         private void showQueryImageOnPictureBox(string path)
@@ -207,6 +220,80 @@ namespace CSC741M_MP1
         {
             SettingsView settingsForm = new SettingsView();
             settingsForm.Show();
+        }
+
+        private void runTestSetButton_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("Please make sure that the settings' database path is set to the WANG database. Are you sure you want to run the test set? (This may take a while.)", 
+                "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dr == DialogResult.Yes)
+            {
+                object[] parameters = new object[] { algorithmComboBox.SelectedIndex };
+                toggleFieldsAndButtons(false);
+                testProcessWorker.RunWorkerAsync(parameters);
+            }
+        }
+
+        private void testProcess_DoWork(object sender, DoWorkEventArgs e)
+        {
+            object[] parameters = e.Argument as object[];
+            int algorithm = (int)parameters[0];
+
+            GoldStandard goldStandard = GoldStandard.getInstance();
+            AlgorithmEnum algoToBeUsed = (AlgorithmEnum)algorithm;
+            Algorithm algoObject = algoHandler.getAlgorithm(algoToBeUsed);
+            algoObject.ProgressUpdate += testProgressListener;
+            List<string> testResults;
+            double averagePrecision = 0;
+            double averageRecall = 0;
+            double averageFmeasure = 0;
+            int count = 0;
+
+            for (int i = 50; i <= 950; i += 100)
+            {
+                testResults = algoHandler.runAlgorithm(settings.DatabaseImagesPath + i + ".jpg", algoToBeUsed);
+                if (goldStandard.calculateEvaluation(settings.DatabaseImagesPath + i + ".jpg", testResults))
+                {
+                    averagePrecision += goldStandard.getPrecision();
+                    averageRecall += goldStandard.getRecall();
+                    averageFmeasure += goldStandard.getFmeasure();
+                    count++;
+                }
+                testProgressValueHI = ((double)i / 950) * 100;
+            }
+
+            averagePrecision /= count;
+            averageRecall /= count;
+            averageFmeasure /= count;
+
+            e.Result = new object[] { algoToBeUsed, averagePrecision, averageRecall, averageFmeasure };
+        }
+
+        private void testProgressListener(double progress)
+        {
+            testProgressValueLO = progress * 10;
+            testProcessWorker.ReportProgress((int)Math.Min(testProgressValueHI + testProgressValueLO, 100));
+        }
+
+        private void testProcess_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            algorithmProgressBar.Value = e.ProgressPercentage;
+        }
+
+        private void testProcess_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            object[] results = e.Result as object[];
+            AlgorithmEnum algoToBeUsed = (AlgorithmEnum)results[0];
+            double precision = (double)results[1];
+            double recall = (double)results[2];
+            double fmeasure = (double)results[3];
+
+            toggleFieldsAndButtons(true);
+            evaluationResultLog.Text = String.Format("Results for {0}:{1}Average Precision: {2}{3}Average Recall: {4}{5}Average F-Measure: {6}",
+                        Algorithm.AlgorithmEnumToString(algoToBeUsed), Environment.NewLine,
+                        precision, Environment.NewLine,
+                        recall, Environment.NewLine,
+                        fmeasure);
         }
     }
 }

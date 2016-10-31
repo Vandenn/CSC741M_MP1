@@ -44,6 +44,8 @@
             this.aboutThisMPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.evaluationResultLog = new System.Windows.Forms.TextBox();
             this.evaluationResultLabel = new System.Windows.Forms.Label();
+            this.runTestSetButton = new System.Windows.Forms.Button();
+            this.runTestSetWarningLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.queryPictureBox)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -197,12 +199,35 @@
             this.evaluationResultLabel.TabIndex = 11;
             this.evaluationResultLabel.Text = "Evaluation Result Log";
             // 
+            // runTestSetButton
+            // 
+            this.runTestSetButton.BackColor = System.Drawing.Color.White;
+            this.runTestSetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.runTestSetButton.Location = new System.Drawing.Point(16, 603);
+            this.runTestSetButton.Name = "runTestSetButton";
+            this.runTestSetButton.Size = new System.Drawing.Size(108, 23);
+            this.runTestSetButton.TabIndex = 12;
+            this.runTestSetButton.Text = "Run Test Set";
+            this.runTestSetButton.UseVisualStyleBackColor = false;
+            this.runTestSetButton.Click += new System.EventHandler(this.runTestSetButton_Click);
+            // 
+            // runTestSetWarningLabel
+            // 
+            this.runTestSetWarningLabel.AutoSize = true;
+            this.runTestSetWarningLabel.Location = new System.Drawing.Point(130, 608);
+            this.runTestSetWarningLabel.Name = "runTestSetWarningLabel";
+            this.runTestSetWarningLabel.Size = new System.Drawing.Size(204, 13);
+            this.runTestSetWarningLabel.TabIndex = 13;
+            this.runTestSetWarningLabel.Text = "Functionality for evaluation purposes only.";
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(504, 609);
+            this.ClientSize = new System.Drawing.Size(504, 638);
+            this.Controls.Add(this.runTestSetWarningLabel);
+            this.Controls.Add(this.runTestSetButton);
             this.Controls.Add(this.evaluationResultLabel);
             this.Controls.Add(this.evaluationResultLog);
             this.Controls.Add(this.algorithmProgressBar);
@@ -245,6 +270,8 @@
         private System.Windows.Forms.ToolStripMenuItem configureToolStripMenuItem;
         private System.Windows.Forms.TextBox evaluationResultLog;
         private System.Windows.Forms.Label evaluationResultLabel;
+        private System.Windows.Forms.Button runTestSetButton;
+        private System.Windows.Forms.Label runTestSetWarningLabel;
     }
 }
 
