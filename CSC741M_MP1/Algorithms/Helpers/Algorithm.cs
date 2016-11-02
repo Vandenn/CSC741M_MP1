@@ -30,6 +30,11 @@ namespace CSC741M_MP1
         protected Algorithm()
         {
             settings = Settings.getSettings();
+            initialize();
+        }
+
+        public void initialize()
+        {
             dataImagePaths = Directory.GetFiles(settings.DatabaseImagesPath).Where(p => p.EndsWith(".jpg") || p.EndsWith(".jpeg")).ToList();
         }
 

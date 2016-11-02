@@ -35,7 +35,10 @@ namespace CSC741M_MP1
         {
             Algorithm toBeRun = algorithms.FirstOrDefault(a => a.getAlgorithmEnum() == algorithm);
             if (toBeRun != null)
+            {
+                toBeRun.initialize();
                 return toBeRun.generateResults(queryPath);
+            }
             else
                 return new List<string>();
         }
