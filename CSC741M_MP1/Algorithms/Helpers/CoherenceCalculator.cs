@@ -98,6 +98,136 @@ namespace CSC741M_MP1.Algorithms.Helpers
             return vector;
         }
 
+        //COPY
+        public Dictionary<int, CoherencePair> generateCoherenceVector(Luv[,] image, Dictionary<int, CenteringPair> centering)
+        {
+            Dictionary<int, CoherencePair> vector = new Dictionary<int, CoherencePair>();
+
+            startingPointQueue.Add(new Point(0, 0));
+            //identify starting point that is part of the center
+            for (int i = 0; i < image.GetLength(0) && startingPointQueue.Count == 0; i++)
+            {
+                for (int j = 0; j < image.GetLength(1) && startingPointQueue.Count == 0; j++)
+                {
+                    int key = CIEConvert.LuvIndexOf(image[i, j]);
+                    if(centering.ContainsKey(key))
+                    {
+                        if (centering[key].center > 0)
+                        {
+                            startingPointQueue.Add(new Point(i, j));
+                        }
+                    }
+                }
+            }            
+
+            Point currentPoint;
+            int currentColor;
+            int currentClusterCount;
+            while (startingPointQueue.Count > 0)
+            {
+                currentPoint = startingPointQueue[0];
+                currentColor = image[currentPoint.Y, currentPoint.X];
+                startingPointQueue.RemoveAt(0);
+                if (currentColor >= 0)
+                {
+                    currentClusterCount = getClusterCountwithCentering(currentPoint, centering);
+                    if (vector.ContainsKey(currentColor))
+                    {
+                        if (currentClusterCount >= connectedCount)
+                        {
+                            vector[currentColor].coherent += currentClusterCount;
+                        }
+                        else
+                        {
+                            vector[currentColor].nonCoherent += currentClusterCount;
+                        }
+                    }
+                    else
+                    {
+                        if (currentClusterCount >= connectedCount)
+                        {
+                            vector.Add(currentColor, new CoherencePair(currentClusterCount, 0));
+                        }
+                        else
+                        {
+                            vector.Add(currentColor, new CoherencePair(0, currentClusterCount));
+                        }
+                    }
+                }
+            }
+
+            double totalPixels = image.GetLength(0) * image.GetLength(1);
+
+            foreach (int key in vector.Keys.ToList())
+            {
+                vector[key].coherent /= totalPixels;
+                vector[key].nonCoherent /= totalPixels;
+            }
+
+            return vector;
+        }
+
+        private int getClusterCountwithCentering(Point startPoint, Dictionary<int, CenteringPair> centering)
+        {
+            int totalCount = 0;
+            int currentColor = image[startPoint.Y, startPoint.X];
+            int[] xvalues;
+            int[] yvalues;
+
+            if (settings.EightConnected)
+            {
+                xvalues = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+                yvalues = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
+            }
+            else
+            {
+                xvalues = new int[] { 0, -1, 1, 0 };
+                yvalues = new int[] { -1, 0, 0, 1 };
+            }
+
+            List<Point> nextPoints = new List<Point>();
+            nextPoints.Add(startPoint);
+
+            Point currentPoint;
+            Point newPoint;
+            int currentPixelStatus;
+
+            while (nextPoints.Count > 0)
+            {
+                currentPoint = nextPoints[0];
+                image[currentPoint.Y, currentPoint.X] = -1;
+                nextPoints.RemoveAt(0);
+                totalCount++;
+                for (int i = 0; i < xvalues.Length; i++)
+                {
+                    currentPixelStatus = checkPixel(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i], currentColor);
+                    //check if center 
+                    int key = CIEConvert.LuvIndexOf(image[currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]]);
+                    
+                    if (currentPixelStatus == 0) continue;
+                    else if (currentPixelStatus == 1)
+                    {
+                        newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
+                        if (!startingPointQueue.Contains(newPoint) && centering[key].center > 0)
+                        {
+                            startingPointQueue.Add(newPoint);
+                        }
+                    }
+                    else if (currentPixelStatus == 2)
+                    {
+                        newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
+                        if (!nextPoints.Any(p => p.X == newPoint.X && p.Y == newPoint.Y) && centering[key].center > 0)
+                        {
+                            nextPoints.Add(newPoint);
+                        }
+                    }
+                }
+            }
+
+            return totalCount;
+        }
+        //END COPY
+
         /// <summary>
         /// Function for getting the number of pixels in the cluster where
         /// <code>startPoint</code> is a member.
