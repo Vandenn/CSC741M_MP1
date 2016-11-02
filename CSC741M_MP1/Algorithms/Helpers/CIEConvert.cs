@@ -23,6 +23,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
     {
         private static bool initialized = false;
         public static Luv[] LuvIndex;
+        private static List<int> LuvIndexLPositions;
         public static double[,] LuvSimilarityMatrix;
         public static double MaxLuvDistance;
         public static double PerceptualDifferenceThreshold;
@@ -34,6 +35,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             if (!initialized)
             {
                 LuvIndex = new Luv[159];
+                LuvIndexLPositions = new List<int>();
                 LuvSimilarityMatrix = new double[159, 159];
                 MaxLuvDistance = 0;
                 PerceptualDifferenceThreshold = 0;
@@ -64,15 +66,19 @@ namespace CSC741M_MP1.Algorithms.Helpers
 
         public static void initLuvIndex()
         {
+            LuvIndexLPositions.Add(0);
             LuvIndex[0].L = 0.0; LuvIndex[0].U = 0.0; LuvIndex[0].V = 0.0;
+            LuvIndexLPositions.Add(1);
             LuvIndex[1].L = 11.111111; LuvIndex[1].U = -14.363326; LuvIndex[1].V = 5.685223;
             LuvIndex[2].L = 11.111111; LuvIndex[2].U = 24.831306; LuvIndex[2].V = 5.685223;
+            LuvIndexLPositions.Add(3);
             LuvIndex[3].L = 22.222222; LuvIndex[3].U = -14.363326; LuvIndex[3].V = -52.209036;
             LuvIndex[4].L = 22.222222; LuvIndex[4].U = -14.363326; LuvIndex[4].V = -23.261906;
             LuvIndex[5].L = 22.222222; LuvIndex[5].U = -14.363326; LuvIndex[5].V = 5.685223;
             LuvIndex[6].L = 22.222222; LuvIndex[6].U = 24.831306; LuvIndex[6].V = -23.261906;
             LuvIndex[7].L = 22.222222; LuvIndex[7].U = 24.831306; LuvIndex[7].V = 5.685223;
             LuvIndex[8].L = 22.222222; LuvIndex[8].U = 64.025939; LuvIndex[8].V = 5.685223;
+            LuvIndexLPositions.Add(9);
             LuvIndex[9].L = 33.333333; LuvIndex[9].U = -14.363326; LuvIndex[9].V = -81.156165;
             LuvIndex[10].L = 33.333333; LuvIndex[10].U = -14.363326; LuvIndex[10].V = -52.209036;
             LuvIndex[11].L = 33.333333; LuvIndex[11].U = -14.363326; LuvIndex[11].V = -23.261906;
@@ -85,6 +91,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             LuvIndex[18].L = 33.333333; LuvIndex[18].U = 64.025939; LuvIndex[18].V = -23.261906;
             LuvIndex[19].L = 33.333333; LuvIndex[19].U = 64.025939; LuvIndex[19].V = 5.685223;
             LuvIndex[20].L = 33.333333; LuvIndex[20].U = 64.025939; LuvIndex[20].V = 34.632352;
+            LuvIndexLPositions.Add(21);
             LuvIndex[21].L = 44.444444; LuvIndex[21].U = -53.557959; LuvIndex[21].V = -23.261906;
             LuvIndex[22].L = 44.444444; LuvIndex[22].U = -53.557959; LuvIndex[22].V = 5.685223;
             LuvIndex[23].L = 44.444444; LuvIndex[23].U = -53.557959; LuvIndex[23].V = 34.632352;
@@ -107,6 +114,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             LuvIndex[40].L = 44.444444; LuvIndex[40].U = 103.220572; LuvIndex[40].V = 5.685223;
             LuvIndex[41].L = 44.444444; LuvIndex[41].U = 103.220572; LuvIndex[41].V = 34.632352;
             LuvIndex[42].L = 44.444444; LuvIndex[42].U = 142.415204; LuvIndex[42].V = 34.632352;
+            LuvIndexLPositions.Add(43);
             LuvIndex[43].L = 55.555556; LuvIndex[43].U = -53.557959; LuvIndex[43].V = -81.156165;
             LuvIndex[44].L = 55.555556; LuvIndex[44].U = -53.557959; LuvIndex[44].V = -52.209036;
             LuvIndex[45].L = 55.555556; LuvIndex[45].U = -53.557959; LuvIndex[45].V = -23.261906;
@@ -139,6 +147,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             LuvIndex[72].L = 55.555556; LuvIndex[72].U = 142.415204; LuvIndex[72].V = 5.685223;
             LuvIndex[73].L = 55.555556; LuvIndex[73].U = 142.415204; LuvIndex[73].V = 34.632352;
             LuvIndex[74].L = 55.555556; LuvIndex[74].U = 181.609837; LuvIndex[74].V = 34.632352;
+            LuvIndexLPositions.Add(75);
             LuvIndex[75].L = 66.666667; LuvIndex[75].U = -92.752592; LuvIndex[75].V = 34.632352;
             LuvIndex[76].L = 66.666667; LuvIndex[76].U = -92.752592; LuvIndex[76].V = 63.579482;
             LuvIndex[77].L = 66.666667; LuvIndex[77].U = -92.752592; LuvIndex[77].V = 92.526611;
@@ -177,6 +186,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             LuvIndex[110].L = 66.666667; LuvIndex[110].U = 142.415204; LuvIndex[110].V = 34.632352;
             LuvIndex[111].L = 66.666667; LuvIndex[111].U = 142.415204; LuvIndex[111].V = 63.579482;
             LuvIndex[112].L = 66.666667; LuvIndex[112].U = 181.609837; LuvIndex[112].V = 63.579482;
+            LuvIndexLPositions.Add(113);
             LuvIndex[113].L = 77.777778; LuvIndex[113].U = -92.752592; LuvIndex[113].V = -52.209036;
             LuvIndex[114].L = 77.777778; LuvIndex[114].U = -92.752592; LuvIndex[114].V = -23.261906;
             LuvIndex[115].L = 77.777778; LuvIndex[115].U = -92.752592; LuvIndex[115].V = 5.685223;
@@ -208,6 +218,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             LuvIndex[141].L = 77.777778; LuvIndex[141].U = 64.025939; LuvIndex[141].V = 63.579482;
             LuvIndex[142].L = 77.777778; LuvIndex[142].U = 64.025939; LuvIndex[142].V = 92.526611;
             LuvIndex[143].L = 77.777778; LuvIndex[143].U = 103.220572; LuvIndex[143].V = 63.579482;
+            LuvIndexLPositions.Add(144);
             LuvIndex[144].L = 88.888889; LuvIndex[144].U = -53.557959; LuvIndex[144].V = -23.261906;
             LuvIndex[145].L = 88.888889; LuvIndex[145].U = -53.557959; LuvIndex[145].V = 5.685223;
             LuvIndex[146].L = 88.888889; LuvIndex[146].U = -53.557959; LuvIndex[146].V = 34.632352;
@@ -222,6 +233,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             LuvIndex[155].L = 88.888889; LuvIndex[155].U = 24.831306; LuvIndex[155].V = 34.632352;
             LuvIndex[156].L = 88.888889; LuvIndex[156].U = 24.831306; LuvIndex[156].V = 63.579482;
             LuvIndex[157].L = 88.888889; LuvIndex[157].U = 24.831306; LuvIndex[157].V = 92.526611;
+            LuvIndexLPositions.Add(158);
             LuvIndex[158].L = 100; LuvIndex[158].U = 0; LuvIndex[158].V = 0;
         }
         public static void initLuvSimilarityMatrix()
@@ -269,9 +281,16 @@ namespace CSC741M_MP1.Algorithms.Helpers
             int nL = 0;
             int nHi = 0;
 
+            /*//Old Code
             while (nHi < 159 && luv.L > LuvIndex[nHi].L)
             {
                 nHi++;
+            }*/
+            foreach (int index in LuvIndexLPositions)
+            {
+                nHi = index;
+                if (luv.L > LuvIndex[nHi].L) continue;
+                else break;
             }
 
             if (luv.L != LuvIndex[nHi].L)
@@ -279,9 +298,16 @@ namespace CSC741M_MP1.Algorithms.Helpers
                 nHi--;
             }
 
+            /*//Old Code
             while (nL < 159 && LuvIndex[nL].L != LuvIndex[nHi].L)
             {
                 nL++;
+            }*/
+            foreach (int index in LuvIndexLPositions)
+            {
+                nL = index;
+                if (LuvIndex[nL].L != LuvIndex[nHi].L) continue;
+                else break;
             }
 
             for (int i = nL; i < nHi; i++)

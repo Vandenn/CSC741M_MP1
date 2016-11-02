@@ -50,8 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Helpers\GoldStandard.cs" />
+    <Compile Include="Algorithms\Helpers\LockBitmap.cs" />
     <Compile Include="Algorithms\Model\CenteringPair.cs" />
     <Compile Include="Algorithms\Model\CoherencePair.cs" />
+    <Compile Include="Algorithms\Model\GoldStandardFile.cs" />
     <Compile Include="Algorithms\Model\ResultData.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="View\AboutView.cs">
@@ -118,6 +121,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gold_standard.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="settings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

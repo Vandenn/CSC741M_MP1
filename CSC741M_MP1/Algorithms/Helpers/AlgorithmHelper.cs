@@ -13,17 +13,19 @@ namespace CSC741M_MP1.Algorithms.Helpers
         public static Luv[,] convertImageToLUV(string path)
         {
             Bitmap image = new Bitmap(path);
-
+            LockBitmap lbmp = new LockBitmap(image);
             Luv[,] convertedImage = new Luv[image.Height, image.Width];
 
+            lbmp.LockBits();
             for (int i = 0; i < image.Height; i++)
             {
                 for (int j = 0; j < image.Width; j++)
                 {
-                    Color c = image.GetPixel(j, i);
+                    Color c = lbmp.GetPixel(j, i);
                     convertedImage[i, j] = CIEConvert.RGBtoLUV(c);
                 }
             }
+            lbmp.UnlockBits();
 
             return convertedImage;
         }
