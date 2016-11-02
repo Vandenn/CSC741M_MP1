@@ -53,6 +53,7 @@
     <Compile Include="Algorithms\Helpers\GoldStandard.cs" />
     <Compile Include="Algorithms\Helpers\LockBitmap.cs" />
     <Compile Include="Algorithms\Model\CenteringPair.cs" />
+    <Compile Include="Algorithms\Model\CoherenceCenteringPair.cs" />
     <Compile Include="Algorithms\Model\CoherencePair.cs" />
     <Compile Include="Algorithms\Model\GoldStandardFile.cs" />
     <Compile Include="Algorithms\Model\ResultData.cs" />
@@ -63,7 +64,7 @@
     <Compile Include="View\AboutView.Designer.cs">
       <DependentUpon>AboutView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Algorithms\BonusAlgorithm.cs" />
+    <Compile Include="Algorithms\SuccessiveRefinement.cs" />
     <Compile Include="Algorithms\CHBasic.cs" />
     <Compile Include="Algorithms\Helpers\AlgorithmHelper.cs" />
     <Compile Include="Algorithms\Helpers\CIEConvert.cs" />

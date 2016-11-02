@@ -12,6 +12,6 @@ namespace CSC741M_MP1
         CHPerpetualSimilarity = 1,
         HistogramRefinementColorCoherence = 2,
         CHCentering = 3,
-        Bonus = 4
+        SuccessiveRefinement = 4
     }
 }

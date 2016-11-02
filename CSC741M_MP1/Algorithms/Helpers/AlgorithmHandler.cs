@@ -23,7 +23,7 @@ namespace CSC741M_MP1
             algorithms.Add(new CHPerpetual());
             algorithms.Add(new HistogramCoherence());
             algorithms.Add(new CHCentering());
-            algorithms.Add(new BonusAlgorithm());
+            algorithms.Add(new SuccessiveRefinement());
         }
 
         public Algorithm getAlgorithm(AlgorithmEnum algorithm)

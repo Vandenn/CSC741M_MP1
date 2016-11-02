@@ -54,8 +54,8 @@ namespace CSC741M_MP1
                     return "Histogram Refinement with Color Coherence";
                 case AlgorithmEnum.CHCentering:
                     return "CH with Centering Refinement";
-                case AlgorithmEnum.Bonus:
-                    return "Bonus";
+                case AlgorithmEnum.SuccessiveRefinement:
+                    return "CH with Successive Refinement";
                 default:
                     return "N/A";
             }
