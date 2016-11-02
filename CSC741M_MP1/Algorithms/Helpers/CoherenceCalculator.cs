@@ -120,9 +120,16 @@ namespace CSC741M_MP1.Algorithms.Helpers
                         vector.Add(currentColor, new CoherenceCenteringPair(new CenteringPair(0,0), new CenteringPair(0, 0)));
                     }
 
+                    double borderPercentage = ((1 - settings.CenterAmount) / 2);
+
+                    bool currentPointisCenter = currentPoint.Y >= image.GetLength(0) * borderPercentage &&
+                            currentPoint.Y <= image.GetLength(0) - image.GetLength(0) * borderPercentage &&
+                            currentPoint.X >= image.GetLength(1) * borderPercentage &&
+                            currentPoint.X <= image.GetLength(1) - image.GetLength(1) * borderPercentage;
+
                     if (currentClusterCount >= connectedCount)
                     {
-                         if (vector[currentColor].coherent.center > 0)
+                         if (currentPointisCenter)
                          {
                              vector[currentColor].coherent.center += currentClusterCount;
                          }
@@ -133,7 +140,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
                      }
                      else if (currentClusterCount < connectedCount)
                      {
-                         if(vector[currentColor].coherent.nonCenter > 0)
+                         if(currentPointisCenter)
                          {
                              vector[currentColor].coherent.nonCenter += currentClusterCount;
                          }
