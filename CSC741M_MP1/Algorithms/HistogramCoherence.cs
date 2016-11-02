@@ -48,7 +48,7 @@ namespace CSC741M_MP1.Algorithms
                 {
                     results.Add(new ResultData(path, similarity));
                 }
-                Console.WriteLine(path + " - " + similarity);
+                //Console.WriteLine(path + " - " + similarity);
                 raiseProgressUpdate((double)i / (dataImagePaths.Count - 1));
             }
 

@@ -71,6 +71,7 @@ namespace CSC741M_MP1
             if (browser.ShowDialog() == DialogResult.OK)
             {
                 DatabasePathTextBox.Text = browser.SelectedPath.ToString();
+                if (!DatabasePathTextBox.Text.EndsWith("\\")) DatabasePathTextBox.Text = DatabasePathTextBox.Text + "\\";
             }
         }
 
@@ -84,6 +85,7 @@ namespace CSC741M_MP1
             if (browser.ShowDialog() == DialogResult.OK)
             {
                 DefaultSearchPathTextBox.Text = browser.SelectedPath.ToString();
+                if (!DefaultSearchPathTextBox.Text.EndsWith("\\")) DefaultSearchPathTextBox.Text = DefaultSearchPathTextBox.Text + "\\";
             }
         }
     }

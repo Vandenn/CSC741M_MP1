@@ -3,7 +3,7 @@
   <DefaultSearchPath>D:\MP1Images\</DefaultSearchPath>
   <DatabaseImagesPath>D:\MP1Images\</DatabaseImagesPath>
   <SimilarityThreshold>0.0</SimilarityThreshold>
-  <RelevanceThreshold>0.05</RelevanceThreshold>
+  <RelevanceThreshold>0.005</RelevanceThreshold>
   <CenterAmount>0.5</CenterAmount>
   <EightConnected>false</EightConnected>
   <ConnectednessThreshold>0.01</ConnectednessThreshold>
