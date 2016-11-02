@@ -20,12 +20,24 @@ namespace CSC741M_MP1.Algorithms.Helpers
         private List<Point> startingPointQueue; // List for holding the starting points when checking for coherent areas
         private Settings settings; // Reference to settings singleton
 
+        private int imageHeight;
+        private int imageWidth;
+        private double borderPercentage;
+        private double imageYBorder;
+        private double imageXBorder;
+
         public CoherenceCalculator(Luv[,] rawImage)
         {
             settings = Settings.getSettings();
             image = convertImageToLuvIndex(rawImage);
             connectedCount = (int)Math.Floor(image.GetLength(0) * image.GetLength(1) * settings.ConnectednessThreshold);
             startingPointQueue = new List<Point>();
+
+            imageHeight = image.GetLength(0);
+            imageWidth = image.GetLength(1);
+            borderPercentage = ((1 - settings.CenterAmount) / 2);
+            imageYBorder = imageHeight * borderPercentage;
+            imageXBorder = imageWidth * borderPercentage;
         }
 
         /// <summary>
@@ -107,6 +119,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
             Point currentPoint;
             int currentColor;
             int currentClusterCount;
+            bool currentPointisCenter;
             while (startingPointQueue.Count > 0)
             {
                 currentPoint = startingPointQueue[0];
@@ -114,18 +127,16 @@ namespace CSC741M_MP1.Algorithms.Helpers
                 startingPointQueue.RemoveAt(0);
                 if (currentColor >= 0)
                 {
-                    currentClusterCount = getClusterCountCentering(currentPoint);
+                    currentPointisCenter = currentPoint.Y >= imageYBorder &&
+                            currentPoint.Y <= imageHeight - imageYBorder &&
+                            currentPoint.X >= imageXBorder &&
+                            currentPoint.X <= imageWidth - imageXBorder;
+
+                    currentClusterCount = getClusterCountCentering(currentPoint, currentPointisCenter);
                     if (!vector.ContainsKey(currentColor))
                     {
                         vector.Add(currentColor, new CoherenceCenteringPair(new CenteringPair(0,0), new CenteringPair(0, 0)));
                     }
-
-                    double borderPercentage = ((1 - settings.CenterAmount) / 2);
-
-                    bool currentPointisCenter = currentPoint.Y >= image.GetLength(0) * borderPercentage &&
-                            currentPoint.Y <= image.GetLength(0) - image.GetLength(0) * borderPercentage &&
-                            currentPoint.X >= image.GetLength(1) * borderPercentage &&
-                            currentPoint.X <= image.GetLength(1) - image.GetLength(1) * borderPercentage;
 
                     if (currentClusterCount >= connectedCount)
                     {
@@ -152,7 +163,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
                 }
             }
 
-            double totalPixels = image.GetLength(0) * image.GetLength(1);
+            double totalPixels = imageWidth * imageHeight;
 
             foreach (int key in vector.Keys.ToList())
             {
@@ -169,7 +180,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
         /// Function for getting the number of pixels in the cluster where
         /// <code>startPoint</code> is a member and is in center/non-center.
         /// </summary>
-        private int getClusterCountCentering(Point startPoint)
+        private int getClusterCountCentering(Point startPoint, bool center)
         {
             int totalCount = 0;
             int currentColor = image[startPoint.Y, startPoint.X];
@@ -193,7 +204,9 @@ namespace CSC741M_MP1.Algorithms.Helpers
             Point currentPoint;
             Point newPoint;
             int currentPixelStatus;
-            double borderPercentage = ((1 - settings.CenterAmount) / 2);
+
+            int newX;
+            int newY;
 
             while (nextPoints.Count > 0)
             {
@@ -202,20 +215,16 @@ namespace CSC741M_MP1.Algorithms.Helpers
                 nextPoints.RemoveAt(0);
                 totalCount++;
 
-                //check if point is at center
-                bool currentPointisCenter = currentPoint.Y >= image.GetLength(0) * borderPercentage &&
-                            currentPoint.Y <= image.GetLength(0) - image.GetLength(0) * borderPercentage &&
-                            currentPoint.X >= image.GetLength(1) * borderPercentage &&
-                            currentPoint.X <= image.GetLength(1) - image.GetLength(1) * borderPercentage;
-
+                bool currentIsCenter;
                 for (int i = 0; i < xvalues.Length; i++)
                 {
-                    int newX = currentPoint.X + xvalues[i];
-                    int newY = currentPoint.Y + yvalues[i];
-                    bool isCenter = newY >= image.GetLength(0) * borderPercentage &&
-                            newY <= image.GetLength(0) - image.GetLength(0) * borderPercentage &&
-                            newX >= image.GetLength(1) * borderPercentage &&
-                            newX <= image.GetLength(1) - image.GetLength(1) * borderPercentage;
+                    newX = currentPoint.X + xvalues[i];
+                    newY = currentPoint.Y + yvalues[i];
+                    currentIsCenter = newY >= imageYBorder &&
+                            newY <= imageHeight - imageYBorder &&
+                            newX >= imageXBorder &&
+                            newX <= imageWidth - imageXBorder;
+                    if (currentIsCenter != center) continue;
                     currentPixelStatus = checkPixel(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i], currentColor);
                     if (currentPixelStatus == 0) continue;
                     else if (currentPixelStatus == 1)
@@ -229,7 +238,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
                     else if (currentPixelStatus == 2)
                     {
                         newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
-                        if (!nextPoints.Any(p => p.X == newPoint.X && p.Y == newPoint.Y) && currentPointisCenter == isCenter)
+                        if (!nextPoints.Any(p => p.X == newPoint.X && p.Y == newPoint.Y))
                         {
                             nextPoints.Add(newPoint);
                         }
