@@ -102,6 +102,59 @@ namespace CSC741M_MP1.Algorithms.Helpers
         {
             Dictionary<int, CoherenceCenteringPair> vector = new Dictionary<int, CoherenceCenteringPair>();
 
+            startingPointQueue.Add(new Point(0, 0));
+
+            Point currentPoint;
+            int currentColor;
+            int currentClusterCount;
+            while (startingPointQueue.Count > 0)
+            {
+                currentPoint = startingPointQueue[0];
+                currentColor = image[currentPoint.Y, currentPoint.X];
+                startingPointQueue.RemoveAt(0);
+                if (currentColor >= 0)
+                {
+                    currentClusterCount = getClusterCountCentering(currentPoint);
+                    if (!vector.ContainsKey(currentColor))
+                    {
+                        vector.Add(currentColor, new CoherenceCenteringPair(new CenteringPair(0,0), new CenteringPair(0, 0)));
+                    }
+
+                    if (currentClusterCount >= connectedCount)
+                    {
+                         if (vector[currentColor].coherent.center > 0)
+                         {
+                             vector[currentColor].coherent.center += currentClusterCount;
+                         }
+                         else
+                         {
+                             vector[currentColor].nonCoherent.center += currentClusterCount;
+                         }
+                     }
+                     else if (currentClusterCount < connectedCount)
+                     {
+                         if(vector[currentColor].coherent.nonCenter > 0)
+                         {
+                             vector[currentColor].coherent.nonCenter += currentClusterCount;
+                         }
+                         else
+                         {
+                             vector[currentColor].nonCoherent.nonCenter += currentClusterCount;
+                         }
+                     }
+                }
+            }
+
+            double totalPixels = image.GetLength(0) * image.GetLength(1);
+
+            foreach (int key in vector.Keys.ToList())
+            {
+                vector[key].coherent.center /= totalPixels;
+                vector[key].coherent.nonCenter /= totalPixels;
+                vector[key].nonCoherent.center /= totalPixels;
+                vector[key].nonCoherent.nonCenter /= totalPixels;
+            }
+
             return vector;
         }
 
@@ -109,9 +162,79 @@ namespace CSC741M_MP1.Algorithms.Helpers
         /// Function for getting the number of pixels in the cluster where
         /// <code>startPoint</code> is a member and is in center/non-center.
         /// </summary>
-        private int getClusterCount(Point startPoint, bool center)
+        private int getClusterCountCentering(Point startPoint)
         {
-            return 0;
+            int totalCount = 0;
+            int currentColor = image[startPoint.Y, startPoint.X];
+            int[] xvalues;
+            int[] yvalues;
+
+            if (settings.EightConnected)
+            {
+                xvalues = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+                yvalues = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
+            }
+            else
+            {
+                xvalues = new int[] { 0, -1, 1, 0 };
+                yvalues = new int[] { -1, 0, 0, 1 };
+            }
+
+            List<Point> nextPoints = new List<Point>();
+            nextPoints.Add(startPoint);
+
+            Point currentPoint;
+            Point newPoint;
+            int currentPixelStatus;
+            double borderPercentage = ((1 - settings.CenterAmount) / 2);
+
+            while (nextPoints.Count > 0)
+            {
+                currentPoint = nextPoints[0];
+                image[currentPoint.Y, currentPoint.X] = -1;
+                nextPoints.RemoveAt(0);
+                totalCount++;
+
+                //check if point is at center
+                bool currentPointisCenter = currentPoint.Y >= image.GetLength(0) * borderPercentage &&
+                            currentPoint.Y <= image.GetLength(0) - image.GetLength(0) * borderPercentage &&
+                            currentPoint.X >= image.GetLength(1) * borderPercentage &&
+                            currentPoint.X <= image.GetLength(1) - image.GetLength(1) * borderPercentage;
+
+                for (int i = 0; i < xvalues.Length; i++)
+                {
+                    int newX = currentPoint.X + xvalues[i];
+                    int newY = currentPoint.Y + yvalues[i];
+                    bool isCenter = newY >= image.GetLength(0) * borderPercentage &&
+                            newY <= image.GetLength(0) - image.GetLength(0) * borderPercentage &&
+                            newX >= image.GetLength(1) * borderPercentage &&
+                            newX <= image.GetLength(1) - image.GetLength(1) * borderPercentage;
+                    currentPixelStatus = checkPixel(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i], currentColor);
+                    if (currentPixelStatus == 0) continue;
+                    else if (currentPixelStatus == 1)
+                    {
+                        newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
+                        if (!startingPointQueue.Contains(newPoint))
+                        {
+                            startingPointQueue.Add(newPoint);
+                        }
+                    }
+                    else if (currentPixelStatus == 2)
+                    {
+                        newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
+                        if (!nextPoints.Any(p => p.X == newPoint.X && p.Y == newPoint.Y) && currentPointisCenter == isCenter)
+                        {
+                            nextPoints.Add(newPoint);
+                        }
+                        else
+                        {
+                            startingPointQueue.Add(newPoint);
+                        }
+                    }
+                }
+            }
+
+            return totalCount;
         }
 
         /// <summary>
