@@ -26,6 +26,8 @@ namespace CSC741M_MP1.Algorithms.Helpers
         private double imageYBorder;
         private double imageXBorder;
 
+        private int[,] pointsChecked; // Visited points; Points that have been added to a queue or have been counted already.
+
         public CoherenceCalculator(Luv[,] rawImage)
         {
             settings = Settings.getSettings();
@@ -38,6 +40,8 @@ namespace CSC741M_MP1.Algorithms.Helpers
             borderPercentage = ((1 - settings.CenterAmount) / 2);
             imageYBorder = imageHeight * borderPercentage;
             imageXBorder = imageWidth * borderPercentage;
+
+            pointsChecked = new int[imageHeight, imageWidth];
         }
 
         /// <summary>
@@ -187,6 +191,8 @@ namespace CSC741M_MP1.Algorithms.Helpers
             int[] xvalues;
             int[] yvalues;
 
+            pointsChecked[startPoint.Y, startPoint.X] = 1;
+
             if (settings.EightConnected)
             {
                 xvalues = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
@@ -202,7 +208,6 @@ namespace CSC741M_MP1.Algorithms.Helpers
             nextPoints.Add(startPoint);
 
             Point currentPoint;
-            Point newPoint;
             int currentPixelStatus;
 
             int newX;
@@ -225,27 +230,15 @@ namespace CSC741M_MP1.Algorithms.Helpers
                             newX >= imageXBorder &&
                             newX <= imageWidth - imageXBorder;
                     if (currentIsCenter != center) continue;
-                    currentPixelStatus = checkPixel(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i], currentColor);
+                    currentPixelStatus = checkPixel(newX, newY, currentColor);
                     if (currentPixelStatus == 0) continue;
-                    else if (currentPixelStatus == 1)
-                    {
-                        newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
-                        if (!startingPointQueue.Contains(newPoint))
-                        {
-                            startingPointQueue.Add(newPoint);
-                        }
-                    }
-                    else if (currentPixelStatus == 2)
-                    {
-                        newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
-                        if (!nextPoints.Any(p => p.X == newPoint.X && p.Y == newPoint.Y))
-                        {
-                            nextPoints.Add(newPoint);
-                        }
-                        else
-                        {
-                            startingPointQueue.Add(newPoint);
-                        }
+                    else
+                    { 
+                        if (currentPixelStatus == 1)
+                            startingPointQueue.Add(new Point(newX, newY));
+                        else if (currentPixelStatus == 2)
+                            nextPoints.Add(new Point(newX, newY));
+                        pointsChecked[newY, newX] = 1;
                     }
                 }
             }
@@ -264,6 +257,8 @@ namespace CSC741M_MP1.Algorithms.Helpers
             int[] xvalues; 
             int[] yvalues;
 
+            pointsChecked[startPoint.Y, startPoint.X] = 1;
+
             if (settings.EightConnected)
             {
                 xvalues = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
@@ -279,8 +274,10 @@ namespace CSC741M_MP1.Algorithms.Helpers
             nextPoints.Add(startPoint);
 
             Point currentPoint;
-            Point newPoint;
             int currentPixelStatus;
+
+            int newX;
+            int newY;
 
             while (nextPoints.Count > 0)
             {
@@ -290,23 +287,17 @@ namespace CSC741M_MP1.Algorithms.Helpers
                 totalCount++;
                 for (int i = 0; i < xvalues.Length; i++)
                 {
-                    currentPixelStatus = checkPixel(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i], currentColor);
+                    newX = currentPoint.X + xvalues[i];
+                    newY = currentPoint.Y + yvalues[i];
+                    currentPixelStatus = checkPixel(newX, newY, currentColor);
                     if (currentPixelStatus == 0) continue;
-                    else if (currentPixelStatus == 1)
+                    else
                     {
-                        newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
-                        if (!startingPointQueue.Contains(newPoint))
-                        {
-                            startingPointQueue.Add(newPoint);
-                        }
-                    }
-                    else if (currentPixelStatus == 2)
-                    {
-                        newPoint = new Point(currentPoint.X + xvalues[i], currentPoint.Y + yvalues[i]);
-                        if (!nextPoints.Any(p => p.X == newPoint.X && p.Y == newPoint.Y))
-                        {
-                            nextPoints.Add(newPoint);
-                        }
+                        if (currentPixelStatus == 1)
+                            startingPointQueue.Add(new Point(newX, newY));
+                        else if (currentPixelStatus == 2)
+                            nextPoints.Add(new Point(newX, newY));
+                        pointsChecked[newY, newX] = 1;
                     }
                 }
             }
@@ -327,7 +318,7 @@ namespace CSC741M_MP1.Algorithms.Helpers
         /// </returns>
         private int checkPixel(int checkX, int checkY, int refColor)
         {
-            if (checkX >= 0 && checkX < image.GetLength(1) && checkY >= 0 && checkY < image.GetLength(0) && image[checkY, checkX] >= 0)
+            if (checkX >= 0 && checkX < image.GetLength(1) && checkY >= 0 && checkY < image.GetLength(0) && image[checkY, checkX] >= 0 && pointsChecked[checkY, checkX] == 0)
             {
                 if (image[checkY, checkX] == refColor)
                 {
